@@ -159,11 +159,13 @@ public class SpanishNumber2LetterTest {
         converter = new Number2LetterBuilder(9_425_458).build();
         assertEquals("nueve millones cuatrocientos veinticinco mil cuatrocientos cincuentiocho", converter.toLetter());
         converter = new Number2LetterBuilder(732_425_458).build();
-        assertEquals("setecientos treintidos millones cuatrocientos veinticinco mil cuatrocientos cincuentiocho", converter.toLetter());
+        assertEquals("setecientos treintidos millones cuatrocientos veinticinco mil cuatrocientos cincuentiocho",
+                converter.toLetter());
         converter = new Number2LetterBuilder(999_001_000).build();
         assertEquals("novecientos noventinueve millones un mil", converter.toLetter());
         converter = new Number2LetterBuilder(999_999_999).build();
-        assertEquals("novecientos noventinueve millones novecientos noventinueve mil novecientos noventinueve", converter.toLetter());
+        assertEquals("novecientos noventinueve millones novecientos noventinueve mil novecientos noventinueve",
+                converter.toLetter());
     }
 
     @Test

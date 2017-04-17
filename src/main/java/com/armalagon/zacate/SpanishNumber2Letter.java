@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 /**
- * Implementacion para convertir un numero a su valor en letras en el idioma espanol. Se pueden configurar variables adicionales como la
- * moneda y el formato largo para las decenas (por ej: veinticinco o veinte y cinco).
+ * Implementacion para convertir un numero a su valor en letras en el idioma espanol. Se pueden configurar variables
+ * adicionales como la moneda, el formato largo para las decenas (por ej: veinticinco o veinte y cinco) y una bandera
+ * para indicar la accion a realizar en caso de no poder convertir el numero.
  *
  * @author aalaniz
  * @version 1.0
@@ -13,16 +14,18 @@ import java.math.RoundingMode;
  */
 public final class SpanishNumber2Letter implements Number2LetterConverter {
 
+    private static final int TEN = 10;
+    private static final int ONE_HUNDRED = 100;
+    private static final int ONE_THOUSAND = 1_000;
     private static final int NUMBER_MIN = 0;
     private static final int NUMBER_MAX = 999_999_999;
     private static final int SPECIALS_MIN = 0;
     private static final int SPECIALS_MAX = 15;
-    private static final String[] SPECIALS = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez",
-        "once", "doce", "trece", "catorce", "quince"};
-    private static final String[][] TENS = {{"diez", "dieci"}, {"veinte", "veinti"}, {"treinta", "treinti"}, {"cuarenta", "cuarenti"},
-        {"cincuenta", "cincuenti"}, {"sesenta", "sesenti"},
-        {"setenta", "setenti"}, {"ochenta", "ochenti"},
-        {"noventa", "noventi"}};
+    private static final String[] SPECIALS = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho",
+        "nueve", "diez", "once", "doce", "trece", "catorce", "quince"};
+    private static final String[][] TENS = {{"diez", "dieci"}, {"veinte", "veinti"}, {"treinta", "treinti"},
+        {"cuarenta", "cuarenti"}, {"cincuenta", "cincuenti"}, {"sesenta", "sesenti"}, {"setenta", "setenti"},
+        {"ochenta", "ochenti"}, {"noventa", "noventi"}};
     private static final String[] HUNDREDS = {"cien", "ciento", "cientos"};
     private static final String[] HUNDRED_SPECIALS = {"quinientos", "setecientos", "novecientos"};
     private static final String ONE = "un";
@@ -53,9 +56,9 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
         StringBuilder sb = new StringBuilder();
         if (theNumber >= SPECIALS_MIN && theNumber <= SPECIALS_MAX) {
             sb.append(SPECIALS[theNumber]);
-        } else if (theNumber < 100) {
-            otherNumber = theNumber % 10;
-            index = theNumber/10;
+        } else if (theNumber < ONE_HUNDRED) {
+            otherNumber = theNumber % TEN;
+            index = theNumber/TEN;
             if (!longFormat) {
                 sb.append(TENS[index - 1][otherNumber > 0 ? 1 : 0]);
             } else {
@@ -67,9 +70,9 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
             if (otherNumber > 0) {
                 sb.append(SPECIALS[otherNumber]);
             }
-        } else if (theNumber < 1000) {
-            otherNumber = theNumber % 100;
-            index = theNumber/100;
+        } else if (theNumber < ONE_THOUSAND) {
+            otherNumber = theNumber % ONE_HUNDRED;
+            index = theNumber/ONE_HUNDRED;
             switch (index) {
                 case 1:
                     sb.append(HUNDREDS[otherNumber > 0 ? 1 : 0]);
@@ -88,8 +91,7 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
                     break;
             }
             if (otherNumber > 0) {
-                sb.append(' ');
-                sb.append(convert(otherNumber));
+                sb.append(' ').append(convert(otherNumber));
             }
         }
         return sb.toString();
@@ -139,8 +141,7 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
             }
             switch (i) {
                 case 3:
-                    sb.append(' ');
-                    sb.append(currentGroup == 1 ? MILLIONS[0] : MILLIONS[1]);
+                    sb.append(' ').append(currentGroup == 1 ? MILLIONS[0] : MILLIONS[1]);
                     break;
                 case 2:
                     sb.append(' ').append(THOUSAND);
