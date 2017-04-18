@@ -38,7 +38,7 @@ final class SpanishNumber2Letter implements Number2Letter {
 
     SpanishNumber2Letter(Number2LetterAbstractBuilder builder) {
         this.number = Math.abs(builder.number);
-        this.decimal = builder.decimal;
+        this.decimal = (builder.decimal == null && builder.alwaysShowFractionPart) ? Integer.valueOf(0) : builder.decimal;
         this.currency = builder.currency;
         this.longFormat = builder.longFormat;
     }

@@ -17,6 +17,7 @@ public abstract class Number2LetterAbstractBuilder {
     final Integer decimal;
     String currency = null;
     boolean longFormat = false;
+    boolean alwaysShowFractionPart = false;
 
     public Number2LetterAbstractBuilder(int number) {
         this.number = number;
@@ -39,6 +40,11 @@ public abstract class Number2LetterAbstractBuilder {
 
     public Number2LetterAbstractBuilder longFormat(boolean longFormat) {
         this.longFormat = longFormat;
+        return this;
+    }
+
+    public Number2LetterAbstractBuilder alwaysShowFractionPart(boolean alwaysShowFractionPart) {
+        this.alwaysShowFractionPart = alwaysShowFractionPart;
         return this;
     }
 

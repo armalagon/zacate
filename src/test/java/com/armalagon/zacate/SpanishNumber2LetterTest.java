@@ -173,6 +173,14 @@ public class SpanishNumber2LetterTest {
         assertEquals("un mil doscientos cincuenta cordoba(s) con 85/100", converter.toLetter());
         converter = new SpanishNumber2LetterBuilder(new BigDecimal("1257.856")).currency("cordoba(s)").build();
         assertEquals("un mil doscientos cincuentisiete cordoba(s) con 86/100", converter.toLetter());
+        converter = new SpanishNumber2LetterBuilder(new BigDecimal("1250.00")).currency("cordoba(s)").build();
+        assertEquals("un mil doscientos cincuenta cordoba(s) con 0/100", converter.toLetter());
+        converter = new SpanishNumber2LetterBuilder(999)
+                .longFormat(true)
+                .alwaysShowFractionPart(true)
+                .currency("cordoba(s)")
+                .build();
+        assertEquals("novecientos noventa y nueve cordoba(s) con 0/100", converter.toLetter());
     }
 
     @Test(expected = NumberConversionException.class)
