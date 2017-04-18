@@ -1,8 +1,5 @@
 package com.armalagon.zacate;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 /**
  * Implementacion para convertir un numero a su valor en letras en el idioma espanol. Se pueden configurar variables
  * adicionales como la moneda, el formato largo para las decenas (por ej: veinticinco o veinte y cinco) y una bandera
@@ -12,7 +9,7 @@ import java.math.RoundingMode;
  * @version 1.0
  * @since 1.0
  */
-final class SpanishNumber2Letter implements Number2LetterConverter {
+final class SpanishNumber2Letter implements Number2Letter {
 
     private static final int TEN = 10;
     private static final int ONE_HUNDRED = 100;
@@ -39,7 +36,7 @@ final class SpanishNumber2Letter implements Number2LetterConverter {
     private final boolean longFormat;
     private String letter;
 
-    private SpanishNumber2Letter(Number2LetterBuilder builder) {
+    SpanishNumber2Letter(Number2LetterAbstractBuilder builder) {
         this.number = Math.abs(builder.number);
         this.decimal = builder.decimal;
         this.currency = builder.currency;
@@ -138,46 +135,5 @@ final class SpanishNumber2Letter implements Number2LetterConverter {
         }
         letter = sb.toString();
         return letter;
-    }
-
-    public static class Number2LetterBuilder {
-
-        private static final BigDecimal ONE_HUNDRED = new BigDecimal(100);
-
-        final int number;
-        final Integer decimal;
-        String currency = null;
-        boolean longFormat = false;
-
-        public Number2LetterBuilder(int number) {
-            this.number = number;
-            this.decimal = null;
-        }
-
-        public Number2LetterBuilder(BigDecimal number) {
-            this.number = number.intValue();
-            this.decimal = number
-                    .setScale(2, RoundingMode.HALF_UP)
-                    .remainder(BigDecimal.ONE)
-                    .multiply(ONE_HUNDRED)
-                    .intValue();
-        }
-
-        public Number2LetterBuilder currency(String currency) {
-            this.currency = currency;
-            return this;
-        }
-
-        public Number2LetterBuilder longFormat(boolean longFormat) {
-            this.longFormat = longFormat;
-            return this;
-        }
-
-        public Number2LetterConverter build() throws NumberConversionException {
-            if (Number2LetterConverter.isOutOfBounds(number)) {
-                throw new NumberConversionException(number);
-            }
-            return new SpanishNumber2Letter(this);
-        }
     }
 }

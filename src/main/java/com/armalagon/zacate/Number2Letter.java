@@ -7,7 +7,7 @@ package com.armalagon.zacate;
  * @version 1.0
  * @since 1.0
  */
-public interface Number2LetterConverter {
+public interface Number2Letter {
 
     int NUMBER_MIN = 0;
     int NUMBER_MAX = 999_999_999;
