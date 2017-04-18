@@ -12,13 +12,11 @@ import java.math.RoundingMode;
  * @version 1.0
  * @since 1.0
  */
-public final class SpanishNumber2Letter implements Number2LetterConverter {
+final class SpanishNumber2Letter implements Number2LetterConverter {
 
     private static final int TEN = 10;
     private static final int ONE_HUNDRED = 100;
     private static final int ONE_THOUSAND = 1_000;
-    private static final int NUMBER_MIN = 0;
-    private static final int NUMBER_MAX = 999_999_999;
     private static final int SPECIALS_MIN = 0;
     private static final int SPECIALS_MAX = 15;
     private static final String[] SPECIALS = {"cero", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho",
@@ -39,7 +37,6 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
     private final Integer decimal;
     private final String currency;
     private final boolean longFormat;
-    private final boolean throwError;
     private String letter;
 
     private SpanishNumber2Letter(Number2LetterBuilder builder) {
@@ -47,7 +44,6 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
         this.decimal = builder.decimal;
         this.currency = builder.currency;
         this.longFormat = builder.longFormat;
-        this.throwError = builder.throwError;
     }
 
     private String convert(int theNumber) {
@@ -88,7 +84,6 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
                     break;
                 default:
                     sb.append(SPECIALS[index]).append(HUNDREDS[2]);
-                    break;
             }
             if (otherNumber > 0) {
                 sb.append(' ').append(convert(otherNumber));
@@ -97,33 +92,21 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
         return sb.toString();
     }
 
-    private boolean isOutOfBounds() {
-        return !(number >= NUMBER_MIN && number <= NUMBER_MAX);
-    }
-
     @Override
-    public String toLetter() throws NumberConversionException {
-        if (isOutOfBounds()) {
-            if (throwError) {
-                throw new NumberConversionException(number);
-            } else {
-                letter = String.valueOf(number);
-            }
-        }
-
+    public String toLetter() {
         if (letter != null) {
             return letter;
         }
 
         StringBuilder sb = new StringBuilder();
-        int theNumber = number; // version modificable del valor original
+        int theNumber = number; // Version modificable del valor original
         int currentGroup; // Numero a convertir
         int power;
         int length = String.valueOf(number).length();
-        int count = (int) Math.ceil(length/3.0);
+        int count = (int) Math.ceil(length/3.0); //Se calculan los grupos de 3 digitos
 
         for (int i = count; i >= 1; i--) {
-            // El numero original tiene al menos 4 digitos
+            // El numero tiene al menos 4 digitos
             if (i > 1) {
                 power = (int) Math.pow(10, (i - 1)*3);
                 currentGroup = theNumber/power;
@@ -139,14 +122,10 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
             } else {
                 sb.append(convert(currentGroup));
             }
-            switch (i) {
-                case 3:
-                    sb.append(' ').append(currentGroup == 1 ? MILLIONS[0] : MILLIONS[1]);
-                    break;
-                case 2:
-                    sb.append(' ').append(THOUSAND);
-                    break;
-                default:
+            if (i == 3) {
+                sb.append(' ').append(currentGroup == 1 ? MILLIONS[0] : MILLIONS[1]);
+            } else if (i == 2) {
+                sb.append(' ').append(THOUSAND);
             }
             if (theNumber == 0) break;
             if (i > 1) sb.append(' ');
@@ -169,7 +148,6 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
         final Integer decimal;
         String currency = null;
         boolean longFormat = false;
-        boolean throwError = false;
 
         public Number2LetterBuilder(int number) {
             this.number = number;
@@ -195,12 +173,10 @@ public final class SpanishNumber2Letter implements Number2LetterConverter {
             return this;
         }
 
-        public Number2LetterBuilder throwError(boolean throwError) {
-            this.throwError = throwError;
-            return this;
-        }
-
-        public Number2LetterConverter build() {
+        public Number2LetterConverter build() throws NumberConversionException {
+            if (Number2LetterConverter.isOutOfBounds(number)) {
+                throw new NumberConversionException(number);
+            }
             return new SpanishNumber2Letter(this);
         }
     }

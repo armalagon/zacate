@@ -176,19 +176,8 @@ public class SpanishNumber2LetterTest {
         assertEquals("un mil doscientos cincuentisiete cordoba con 86/100", converter.toLetter());
     }
 
-    @Test
-    public void testNumberOutOfBounds() throws NumberConversionException {
-        converter = new Number2LetterBuilder(1_000_000_000).build();
-        assertEquals("1000000000", converter.toLetter());
-        converter = new Number2LetterBuilder(1_999_999_999).build();
-        assertEquals("1999999999", converter.toLetter());
-        converter = new Number2LetterBuilder(new BigDecimal("1999999999.45")).build();
-        assertEquals("1999999999", converter.toLetter());
-    }
-
     @Test(expected = NumberConversionException.class)
-    public void testNumberOutOfBoundsAndThrowError() throws NumberConversionException {
-        converter = new Number2LetterBuilder(1_000_000_000).throwError(true).build();
-        converter.toLetter();
+    public void testNumberOutOfBounds() throws NumberConversionException {
+        new Number2LetterBuilder(1_000_000_000).build();
     }
 }
