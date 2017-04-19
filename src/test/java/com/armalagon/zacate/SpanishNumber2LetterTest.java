@@ -27,6 +27,8 @@ public class SpanishNumber2LetterTest {
         assertEquals("nueve", converter.toLetter());
         converter = new SpanishNumber2LetterBuilder(10).build();
         assertEquals("diez", converter.toLetter());
+        converter = new SpanishNumber2LetterBuilder(7).build();
+        assertEquals("siete", converter.toString());
     }
 
     @Test

@@ -1,9 +1,10 @@
 package com.armalagon.zacate;
 
+import java.util.Objects;
+
 /**
  * Implementacion para convertir un numero a su valor en letras en el idioma espanol. Se pueden configurar variables
- * adicionales como la moneda, el formato largo para las decenas (por ej: veinticinco o veinte y cinco) y una bandera
- * para indicar la accion a realizar en caso de no poder convertir el numero.
+ * adicionales como la moneda, el formato largo para las decenas (por ej: veinticinco o veinte y cinco).
  *
  * @author aalaniz
  * @version 1.0
@@ -34,13 +35,26 @@ final class SpanishNumber2Letter implements Number2Letter {
     private final Integer decimal;
     private final String currency;
     private final boolean longFormat;
-    private String letter;
+    private final String letter;
 
     SpanishNumber2Letter(Number2LetterAbstractBuilder builder) {
         this.number = Math.abs(builder.number);
         this.decimal = (builder.decimal == null && builder.alwaysShowFractionPart) ? Integer.valueOf(0) : builder.decimal;
         this.currency = builder.currency;
         this.longFormat = builder.longFormat;
+        this.letter = process();
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public Integer getDecimal() {
+        return decimal;
+    }
+
+    public String getCurrency() {
+        return currency;
     }
 
     private String convert(int theNumber) {
@@ -89,18 +103,13 @@ final class SpanishNumber2Letter implements Number2Letter {
         return sb.toString();
     }
 
-    @Override
-    public String toLetter() {
-        if (letter != null) {
-            return letter;
-        }
-
+    private String process() {
         StringBuilder sb = new StringBuilder();
         int theNumber = number; // Version modificable del valor original
         int currentGroup; // Numero a convertir
         int power;
         int length = String.valueOf(number).length();
-        int count = (int) Math.ceil(length/3.0); //Se calculan los grupos de 3 digitos
+        int count = (int) Math.ceil(length/3.0); // Se calculan los grupos de 3 digitos
 
         for (int i = count; i >= 1; i--) {
             // El numero tiene al menos 4 digitos
@@ -133,7 +142,38 @@ final class SpanishNumber2Letter implements Number2Letter {
         if (decimal != null) {
             sb.append(FRACTION_WITH).append(decimal).append(FRACTION_SUFFIX);
         }
-        letter = sb.toString();
+        return sb.toString();
+    }
+
+    @Override
+    public String toLetter() {
+        return letter;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + Objects.hashCode(this.letter);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof SpanishNumber2Letter)) {
+            return false;
+        }
+        final SpanishNumber2Letter other = (SpanishNumber2Letter) obj;
+        if (!Objects.equals(this.letter, other.letter)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
         return letter;
     }
 }

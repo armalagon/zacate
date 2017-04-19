@@ -12,7 +12,7 @@ public interface Number2Letter {
     int NUMBER_MIN = 0;
     int NUMBER_MAX = 999_999_999;
 
-    String toLetter() throws NumberConversionException;
+    String toLetter();
 
     static boolean isOutOfBounds(int number) {
         return !(number >= NUMBER_MIN && number <= NUMBER_MAX);
