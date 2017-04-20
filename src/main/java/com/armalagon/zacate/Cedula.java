@@ -3,11 +3,12 @@ package com.armalagon.zacate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Optional;
 
 /**
  * Wrapper del valor de una cedula. A partir de una cadena, se valida su estructura y solo si es correcta, se
  * obtienen las secciones que la componen (codigo del municipio, fecha de nacimiento, consecutivo y digito
- * verificador), en caso contrario se inicializan a {@code null}.
+ * verificador) y se inicializan sus respectivos atributos, en caso contrario se inicializan a {@code null}.
  *
  * @author aalaniz
  * @version 1.0
@@ -51,9 +52,12 @@ public final class Cedula {
         }
     }
 
-    private long parseAsLong(String value) throws NumberFormatException {
-        String numeric = value.substring(0, LENGTH - 1);
-        return Long.parseLong(numeric);
+    private Optional<Long> parseAsLong(String value) {
+        try {
+            return Optional.of(Long.parseLong(value));
+        } catch (NumberFormatException nfe) {
+            return Optional.empty();
+        }
     }
 
     private boolean isDate(String value) {
@@ -73,22 +77,21 @@ public final class Cedula {
     }
 
     private boolean validate() {
-        long numeric;
+        Optional<Long> number;
         String date;
 
         if (raw == null || raw.trim().length() != LENGTH) {
             return false;
         }
-        try {
-            numeric = parseAsLong(raw);
-        } catch (NumberFormatException nfe) {
+        number = parseAsLong(raw.substring(0, LENGTH - 1));
+        if (!number.isPresent()) {
             return false;
         }
         date = raw.substring(BIRTHDAY_INDEX[0], BIRTHDAY_INDEX[1]);
         if (!isDate(date)) {
             return false;
         }
-        if (calculateDigit(numeric) != Character.toUpperCase(raw.charAt(LENGTH - 1))) {
+        if (calculateDigit(number.get()) != Character.toUpperCase(raw.charAt(LENGTH - 1))) {
             return false;
         }
         return true;
