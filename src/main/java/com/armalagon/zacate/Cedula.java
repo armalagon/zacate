@@ -3,6 +3,7 @@ package com.armalagon.zacate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -54,7 +55,7 @@ public final class Cedula {
 
     private Optional<Long> parseAsLong(String value) {
         try {
-            return Optional.of(Long.parseLong(value));
+            return Optional.of(Long.valueOf(value));
         } catch (NumberFormatException nfe) {
             return Optional.empty();
         }
@@ -123,5 +124,27 @@ public final class Cedula {
 
     public String getFormatted() {
         return formatted;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.raw);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Cedula)) {
+            return false;
+        }
+        final Cedula other = (Cedula) obj;
+        if (!Objects.equals(this.raw, other.raw)) {
+            return false;
+        }
+        return true;
     }
 }
