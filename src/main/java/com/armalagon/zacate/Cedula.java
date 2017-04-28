@@ -4,7 +4,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Objects;
-import java.util.Optional;
 
 /**
  * Wrapper del valor de una cedula. A partir de una cadena, se valida su estructura y solo si es correcta, se
@@ -20,9 +19,6 @@ public final class Cedula {
     private static final int LENGTH = 14;
     private static final char[] DIGITS = "ABCDEFGHJKLMNPQRSTUVWXY".toCharArray();
     private static final char HYPHEN = '-';
-    private static final int[] DISTRICT_INDEX = {0, 3};
-    private static final int[] BIRTHDAY_INDEX = {3, 9};
-    private static final int[] CONSECUTIVE_INDEX = {9, 13};
     private static final DateTimeFormatter BIRTHDAY_FORMATTER = DateTimeFormatter.ofPattern("ddMMuuuu")
             .withResolverStyle(ResolverStyle.STRICT);
 
@@ -39,9 +35,9 @@ public final class Cedula {
         this.valid = validate();
 
         if (this.valid) {
-            this.district = raw.substring(DISTRICT_INDEX[0], DISTRICT_INDEX[1]);
-            this.birthday = raw.substring(BIRTHDAY_INDEX[0], BIRTHDAY_INDEX[1]);
-            this.consecutive = raw.substring(CONSECUTIVE_INDEX[0], CONSECUTIVE_INDEX[1]);
+            this.district = raw.substring(0, 3);
+            this.birthday = raw.substring(3, 9);
+            this.consecutive = raw.substring(9, 13);
             this.digit = raw.charAt(LENGTH - 1);
             this.formatted = this.district + HYPHEN + this.birthday + HYPHEN + this.consecutive + this.digit;
         } else {
@@ -53,46 +49,30 @@ public final class Cedula {
         }
     }
 
-    private Optional<Long> parseAsLong(String value) {
-        try {
-            return Optional.of(Long.valueOf(value));
-        } catch (NumberFormatException nfe) {
-            return Optional.empty();
-        }
-    }
-
-    private boolean isDate(String value) {
-        // En los proximos anios se necesitaria considerar tambien el 20
-        String _birthday = value.substring(0, 4) + "19" + value.substring(4);
-        try {
-            BIRTHDAY_FORMATTER.parse(_birthday);
-            return true;
-        } catch (DateTimeParseException dtpe) {
-            return false;
-        }
-    }
-
-    private char calculateDigit(long numeric) {
-        int index = (int) (numeric % DIGITS.length);
-        return DIGITS[index];
-    }
-
     private boolean validate() {
-        Optional<Long> number;
+        long number;
+        int index;
         String date;
+        String _birthday;
 
         if (raw == null || raw.trim().length() != LENGTH) {
             return false;
         }
-        number = parseAsLong(raw.substring(0, LENGTH - 1));
-        if (!number.isPresent()) {
+        try {
+            number = Long.parseLong(raw.substring(0, LENGTH - 1));
+        } catch (NumberFormatException nfe) {
             return false;
         }
-        date = raw.substring(BIRTHDAY_INDEX[0], BIRTHDAY_INDEX[1]);
-        if (!isDate(date)) {
+        date = raw.substring(3, 9);
+        // En los proximos anios se necesitaria considerar tambien el 20YY
+        _birthday = date.substring(0, 4) + "19" + date.substring(4);
+        try {
+            BIRTHDAY_FORMATTER.parse(_birthday);
+        } catch (DateTimeParseException dtpe) {
             return false;
         }
-        if (calculateDigit(number.get()) != Character.toUpperCase(raw.charAt(LENGTH - 1))) {
+        index = (int) (number % DIGITS.length);
+        if (DIGITS[index] != Character.toUpperCase(raw.charAt(LENGTH - 1))) {
             return false;
         }
         return true;
