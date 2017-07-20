@@ -46,7 +46,7 @@ las secciones retornan `null`.
 
 A continuacion un ejemplo de como usar la clase:
 
-        Cedula cedula = new Cedula("2811311830009v");
+        Cedula cedula = Cedula.create("2811311830009v");
         cedula.isValid(); // true
         cedula.getRaw(); // La cadena original pasada al constructor de la clase
         cedula.getDistrict(); // 281
@@ -56,7 +56,7 @@ A continuacion un ejemplo de como usar la clase:
         cedula.getFormatted(); // 281-131183-0009v
 
         // La siguiente cedula es incorrecta porque la fecha no es valida
-        cedula = new Cedula("2813201830008V");
+        cedula = Cedula.create("2813201830008V");
         cedula.isValid(); // false
         cedula.getRaw(); // La cadena original
         cedula.getDistrict(); // null
@@ -65,4 +65,3 @@ A continuacion un ejemplo de como usar la clase:
         cedula.getDigit(); // null
         cedula.getFormatted(); // null
 
-Mas ejemplos de como usar la clase estan disponibles en el test `CedulaTest`.

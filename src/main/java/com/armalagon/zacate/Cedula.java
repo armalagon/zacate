@@ -23,18 +23,16 @@ public final class Cedula {
             .withResolverStyle(ResolverStyle.STRICT);
 
     private final String raw;
-    private final boolean valid;
     private final String district;
     private final String birthday;
     private final String consecutive;
     private final Character digit;
     private final String formatted;
 
-    public Cedula(String raw) {
+    private Cedula(String raw, boolean valid) {
         this.raw = raw;
-        this.valid = validate();
 
-        if (this.valid) {
+        if (valid) {
             this.district = raw.substring(0, 3);
             this.birthday = raw.substring(3, 9);
             this.consecutive = raw.substring(9, 13);
@@ -49,41 +47,12 @@ public final class Cedula {
         }
     }
 
-    private boolean validate() {
-        long number;
-        int index;
-        String date;
-        String _birthday;
-
-        if (raw == null || raw.trim().length() != LENGTH) {
-            return false;
-        }
-        try {
-            number = Long.parseLong(raw.substring(0, LENGTH - 1));
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-        date = raw.substring(3, 9);
-        // En los proximos anios se necesitaria considerar tambien el 20YY
-        _birthday = date.substring(0, 4) + "19" + date.substring(4);
-        try {
-            BIRTHDAY_FORMATTER.parse(_birthday);
-        } catch (DateTimeParseException dtpe) {
-            return false;
-        }
-        index = (int) (number % DIGITS.length);
-        if (DIGITS[index] != Character.toUpperCase(raw.charAt(LENGTH - 1))) {
-            return false;
-        }
-        return true;
-    }
-
     public String getRaw() {
         return raw;
     }
 
     public boolean isValid() {
-        return valid;
+        return district != null && birthday != null && consecutive != null && digit != null;
     }
 
     public String getDistrict() {
@@ -126,5 +95,39 @@ public final class Cedula {
             return false;
         }
         return true;
+    }
+
+    private static boolean validate(String value) {
+        long number;
+        int index;
+        String date;
+        String _birthday;
+
+        if (value == null || value.trim().length() != LENGTH) {
+            return false;
+        }
+        try {
+            number = Long.parseLong(value.substring(0, LENGTH - 1));
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        date = value.substring(3, 9);
+        // En los proximos anios se necesitaria considerar tambien el 20YY
+        _birthday = date.substring(0, 4) + "19" + date.substring(4);
+        try {
+            BIRTHDAY_FORMATTER.parse(_birthday);
+        } catch (DateTimeParseException dtpe) {
+            return false;
+        }
+        index = (int) (number % DIGITS.length);
+        if (DIGITS[index] != Character.toUpperCase(value.charAt(LENGTH - 1))) {
+            return false;
+        }
+        return true;
+    }
+
+    public static Cedula create(String value) {
+        boolean valid = validate(value);
+        return new Cedula(value, valid);
     }
 }

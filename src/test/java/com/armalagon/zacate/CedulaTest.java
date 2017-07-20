@@ -1,9 +1,6 @@
 package com.armalagon.zacate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 import org.junit.Test;
 
 /**
@@ -21,7 +18,7 @@ public class CedulaTest {
 
     @Test
     public void testValidNationalId() {
-        cedula = new Cedula("2811311830009v");
+        cedula = Cedula.create("2811311830009v");
         assertTrue(cedula.isValid());
         assertEquals("2811311830009v", cedula.getRaw());
         assertEquals("281", cedula.getDistrict());
@@ -29,7 +26,7 @@ public class CedulaTest {
         assertEquals("0009", cedula.getConsecutive());
         assertEquals(Character.valueOf('v'), cedula.getDigit());
         assertEquals("281-131183-0009v", cedula.getFormatted());
-        cedula = new Cedula("2812008640022J");
+        cedula = Cedula.create("2812008640022J");
         assertTrue(cedula.isValid());
         assertEquals("2812008640022J", cedula.getRaw());
         assertEquals("281", cedula.getDistrict());
@@ -41,7 +38,7 @@ public class CedulaTest {
 
     @Test
     public void testWrongNationalId() {
-        cedula = new Cedula(null);
+        cedula = Cedula.create(null);
         assertFalse(cedula.isValid());
         assertNull(cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -49,7 +46,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("");
+        cedula = Cedula.create("");
         assertFalse(cedula.isValid());
         assertEquals("", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -57,7 +54,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("    ");
+        cedula = Cedula.create("    ");
         assertFalse(cedula.isValid());
         assertEquals("    ", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -65,7 +62,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("abcde");
+        cedula = Cedula.create("abcde");
         assertFalse(cedula.isValid());
         assertEquals("abcde", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -73,7 +70,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("281131183009");
+        cedula = Cedula.create("281131183009");
         assertFalse(cedula.isValid());
         assertEquals("281131183009", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -81,7 +78,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("2811a11830009V");
+        cedula = Cedula.create("2811a11830009V");
         assertFalse(cedula.isValid());
         assertEquals("2811a11830009V", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -89,7 +86,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("2811311830009f");
+        cedula = Cedula.create("2811311830009f");
         assertFalse(cedula.isValid());
         assertEquals("2811311830009f", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -97,7 +94,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = new Cedula("2813201830008V");
+        cedula = Cedula.create("2813201830008V");
         assertFalse(cedula.isValid());
         assertEquals("2813201830008V", cedula.getRaw());
         assertNull(cedula.getDistrict());
