@@ -4,6 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
 import java.util.Objects;
+import java.util.function.UnaryOperator;
 
 /**
  * Wrapper del valor de una cedula. A partir de una cadena, se valida su estructura y solo si es correcta, se
@@ -29,10 +30,10 @@ public final class Cedula {
     private final Character digit;
     private final String formatted;
 
-    private Cedula(String raw, boolean valid) {
+    private Cedula(final String raw, final boolean isValid) {
         this.raw = raw;
 
-        if (valid) {
+        if (isValid) {
             this.district = raw.substring(0, 3);
             this.birthday = raw.substring(3, 9);
             this.consecutive = raw.substring(9, 13);
@@ -75,6 +76,15 @@ public final class Cedula {
         return formatted;
     }
 
+    public String getFormatted(final UnaryOperator<String> formatter) {
+        Objects.requireNonNull(formatter);
+        if (isValid()) {
+            return formatter.apply(raw);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public int hashCode() {
         int hash = 5;
@@ -97,11 +107,11 @@ public final class Cedula {
         return true;
     }
 
-    private static boolean validate(String value) {
-        long number;
-        int index;
-        String date;
-        String _birthday;
+    private static boolean validate(final String value) {
+        final long number;
+        final int index;
+        final String date;
+        final String _birthday;
 
         if (value == null || value.trim().length() != LENGTH) {
             return false;
@@ -126,8 +136,8 @@ public final class Cedula {
         return true;
     }
 
-    public static Cedula create(String value) {
-        boolean valid = validate(value);
-        return new Cedula(value, valid);
+    public static Cedula of(final String value) {
+        final boolean isValid = validate(value);
+        return new Cedula(value, isValid);
     }
 }
