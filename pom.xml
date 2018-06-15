@@ -13,6 +13,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <jooq.version>3.11.0</jooq.version>
+        <jacoco.version>0.8.1</jacoco.version>
+
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -36,7 +38,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.7.9</version>
+                <version>${jacoco.version}</version>
                 <executions>
                     <execution>
                         <goals>
