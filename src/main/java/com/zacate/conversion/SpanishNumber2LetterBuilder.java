@@ -1,4 +1,4 @@
-package com.armalagon.zacate;
+package com.zacate.conversion;
 
 import java.math.BigDecimal;
 

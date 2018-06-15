@@ -1,4 +1,4 @@
-package com.armalagon.zacate;
+package com.zacate.identifier;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,7 +15,7 @@ import java.util.function.UnaryOperator;
  * @version 1.0
  * @since 1.0
  */
-public final class Cedula {
+public final class NicaraguanNationalId {
 
     private static final int LENGTH = 14;
     private static final char[] DIGITS = "ABCDEFGHJKLMNPQRSTUVWXY".toCharArray();
@@ -30,7 +30,7 @@ public final class Cedula {
     private final Character digit;
     private final String formatted;
 
-    private Cedula(final String raw, final boolean isValid) {
+    private NicaraguanNationalId(final String raw, final boolean isValid) {
         this.raw = raw;
 
         if (isValid) {
@@ -97,10 +97,10 @@ public final class Cedula {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof Cedula)) {
+        if (!(obj instanceof NicaraguanNationalId)) {
             return false;
         }
-        final Cedula other = (Cedula) obj;
+        final NicaraguanNationalId other = (NicaraguanNationalId) obj;
         if (!Objects.equals(this.raw, other.raw)) {
             return false;
         }
@@ -136,8 +136,8 @@ public final class Cedula {
         return true;
     }
 
-    public static Cedula of(final String value) {
+    public static NicaraguanNationalId of(final String value) {
         final boolean isValid = validate(value);
-        return new Cedula(value, isValid);
+        return new NicaraguanNationalId(value, isValid);
     }
 }

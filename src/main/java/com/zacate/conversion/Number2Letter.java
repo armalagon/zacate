@@ -1,4 +1,4 @@
-package com.armalagon.zacate;
+package com.zacate.conversion;
 
 /**
  * Convertir un numero a su valor en letras.

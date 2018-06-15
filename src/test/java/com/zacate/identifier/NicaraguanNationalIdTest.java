@@ -1,5 +1,6 @@
-package com.armalagon.zacate;
+package com.zacate.identifier;
 
+import com.zacate.identifier.NicaraguanNationalId;
 import java.util.function.UnaryOperator;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -10,13 +11,13 @@ import org.junit.Test;
  * @version 1.0
  * @since 1.0
  */
-public class CedulaTest {
+public class NicaraguanNationalIdTest {
 
     private static final String HYPHEN = "-";
 
-    private Cedula cedula;
+    private NicaraguanNationalId cedula;
 
-    public CedulaTest() {
+    public NicaraguanNationalIdTest() {
     }
 
     @Test
@@ -25,7 +26,7 @@ public class CedulaTest {
                 HYPHEN + value.substring(5, 7) + HYPHEN + value.substring(7, 9) + HYPHEN + value.substring(9, 13) +
                 HYPHEN + value.charAt(13);
 
-        cedula = Cedula.of("2811311830009v");
+        cedula = NicaraguanNationalId.of("2811311830009v");
         assertTrue(cedula.isValid());
         assertEquals("2811311830009v", cedula.getRaw());
         assertEquals("281", cedula.getDistrict());
@@ -34,7 +35,7 @@ public class CedulaTest {
         assertEquals(Character.valueOf('v'), cedula.getDigit());
         assertEquals("281-131183-0009v", cedula.getFormatted());
         assertEquals("281-13-11-83-0009-v", cedula.getFormatted(prettyFormatter));
-        cedula = Cedula.of("2812008640022J");
+        cedula = NicaraguanNationalId.of("2812008640022J");
         assertTrue(cedula.isValid());
         assertEquals("2812008640022J", cedula.getRaw());
         assertEquals("281", cedula.getDistrict());
@@ -47,7 +48,7 @@ public class CedulaTest {
 
     @Test
     public void testWrongNationalId() {
-        cedula = Cedula.of(null);
+        cedula = NicaraguanNationalId.of(null);
         assertFalse(cedula.isValid());
         assertNull(cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -55,7 +56,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("");
+        cedula = NicaraguanNationalId.of("");
         assertFalse(cedula.isValid());
         assertEquals("", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -63,7 +64,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("    ");
+        cedula = NicaraguanNationalId.of("    ");
         assertFalse(cedula.isValid());
         assertEquals("    ", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -71,7 +72,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("abcde");
+        cedula = NicaraguanNationalId.of("abcde");
         assertFalse(cedula.isValid());
         assertEquals("abcde", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -79,7 +80,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("281131183009");
+        cedula = NicaraguanNationalId.of("281131183009");
         assertFalse(cedula.isValid());
         assertEquals("281131183009", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -87,7 +88,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("2811a11830009V");
+        cedula = NicaraguanNationalId.of("2811a11830009V");
         assertFalse(cedula.isValid());
         assertEquals("2811a11830009V", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -95,7 +96,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("2811311830009f");
+        cedula = NicaraguanNationalId.of("2811311830009f");
         assertFalse(cedula.isValid());
         assertEquals("2811311830009f", cedula.getRaw());
         assertNull(cedula.getDistrict());
@@ -103,7 +104,7 @@ public class CedulaTest {
         assertNull(cedula.getConsecutive());
         assertNull(cedula.getDigit());
         assertNull(cedula.getFormatted());
-        cedula = Cedula.of("2813201830008V");
+        cedula = NicaraguanNationalId.of("2813201830008V");
         assertFalse(cedula.isValid());
         assertEquals("2813201830008V", cedula.getRaw());
         assertNull(cedula.getDistrict());

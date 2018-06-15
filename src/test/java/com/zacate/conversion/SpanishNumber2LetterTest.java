@@ -1,5 +1,8 @@
-package com.armalagon.zacate;
+package com.zacate.conversion;
 
+import com.zacate.conversion.NumberConversionException;
+import com.zacate.conversion.SpanishNumber2LetterBuilder;
+import com.zacate.conversion.Number2Letter;
 import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
