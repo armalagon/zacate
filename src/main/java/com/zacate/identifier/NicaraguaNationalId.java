@@ -15,7 +15,7 @@ import java.util.function.UnaryOperator;
  * @version 1.0
  * @since 1.0
  */
-public final class NicaraguanNationalId {
+public final class NicaraguaNationalId {
 
     private static final int LENGTH = 14;
     private static final char[] DIGITS = "ABCDEFGHJKLMNPQRSTUVWXY".toCharArray();
@@ -30,7 +30,7 @@ public final class NicaraguanNationalId {
     private final Character digit;
     private final String formatted;
 
-    private NicaraguanNationalId(final String raw, final boolean isValid) {
+    private NicaraguaNationalId(final String raw, final boolean isValid) {
         this.raw = raw;
 
         if (isValid) {
@@ -97,10 +97,10 @@ public final class NicaraguanNationalId {
         if (this == obj) {
             return true;
         }
-        if (!(obj instanceof NicaraguanNationalId)) {
+        if (!(obj instanceof NicaraguaNationalId)) {
             return false;
         }
-        final NicaraguanNationalId other = (NicaraguanNationalId) obj;
+        final NicaraguaNationalId other = (NicaraguaNationalId) obj;
         if (!Objects.equals(this.raw, other.raw)) {
             return false;
         }
@@ -136,8 +136,8 @@ public final class NicaraguanNationalId {
         return true;
     }
 
-    public static NicaraguanNationalId of(final String value) {
+    public static NicaraguaNationalId of(final String value) {
         final boolean isValid = validate(value);
-        return new NicaraguanNationalId(value, isValid);
+        return new NicaraguaNationalId(value, isValid);
     }
 }
