@@ -15,9 +15,11 @@ public interface LocalizedEnum extends Localized {
             throw new UnsupportedOperationException("The class [" + this.getClass().getName() + "] must be an Enum type to be able to retrieve the description");
         }
 
-        StringBuilder key = new StringBuilder(this.getClass().getName());
+        Enum<?> enumObj = (Enum<?>) this;
+
+        StringBuilder key = new StringBuilder(enumObj.getDeclaringClass().getName());
         key.append(DOT);
-        key.append(((Enum) this).name());
+        key.append(enumObj.name());
         return getMessage(key.toString());
     }
 
