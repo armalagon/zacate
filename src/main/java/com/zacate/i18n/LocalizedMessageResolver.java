@@ -25,11 +25,6 @@ public abstract class LocalizedMessageResolver {
     public static String translate(String bundleName, String key) {
         ResourceBundle bundle = ResourceBundle.getBundle(bundleName);
         String message = bundle.getString(key);
-
-        if (message == null) {
-            throw new IllegalArgumentException("The key [" + key + "] doesn't exist in the specified bundle [" + bundle.getBaseBundleName() + "]");
-        }
-
         return message;
     }
 
