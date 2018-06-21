@@ -1,7 +1,6 @@
 package com.zacate.i18n;
 
 import static com.zacate.i18n.LocalizedConstants.DOT;
-import java.util.Objects;
 
 /**
  *
@@ -22,10 +21,6 @@ public interface LocalizedEnum extends Localized {
         key.append(DOT);
         key.append(enumObj.name());
         return getMessage(key.toString());
-    }
-
-    default boolean containsIgnoreCase(String value) {
-        return getMessage().toLowerCase().contains(Objects.requireNonNull(value).toLowerCase());
     }
 
 }
