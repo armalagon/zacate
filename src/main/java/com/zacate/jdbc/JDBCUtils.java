@@ -1,5 +1,6 @@
 package com.zacate.jdbc;
 
+import com.zacate.collection.ArrayUtils;
 import java.time.LocalDate;
 
 /**
@@ -15,13 +16,14 @@ public abstract class JDBCUtils {
     }
 
     public static void close(AutoCloseable jdbcObj) throws Exception {
-        if (jdbcObj != null) {
-            jdbcObj.close();
+        if (jdbcObj == null) {
+            return;
         }
+        jdbcObj.close();
     }
 
     public static void close(AutoCloseable... objs) throws Exception {
-        if (objs == null || objs.length == 0) {
+        if (ArrayUtils.isEmpty(objs)) {
             return;
         }
         for (AutoCloseable obj : objs) {

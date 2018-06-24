@@ -1,5 +1,6 @@
 package com.zacate.text;
 
+import com.zacate.collection.ArrayUtils;
 import com.zacate.i18n.LocalizedEnum;
 import com.zacate.identifier.StringNaturalIdentifierLocalizable;
 import java.util.Objects;
@@ -28,14 +29,14 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(CharSequence value) {
-        if (!found && value != null) {
+        if (!(found || value == null)) {
             found = ignoreCase ? value.toString().toLowerCase().contains(text) : value.toString().contains(text);
         }
         return this;
     }
 
     public SimpleTextSearch field(CharSequence... values) {
-        if (!found && !(values == null || values.length == 0)) {
+        if (!(found || ArrayUtils.isEmpty(values))) {
             for (CharSequence value : values) {
                 field(value);
             }
@@ -44,7 +45,7 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(StringNaturalIdentifierLocalizable value) {
-        if (!found && value != null) {
+        if (!(found || value == null)) {
             found = !(value.getCode() == null || value.getMessage() == null) ? ignoreCase ? value.getCode().toLowerCase().contains(text) ||
                     value.getMessage().toLowerCase().contains(text) : value.getCode().contains(text) || value.getMessage().contains(text)
                     : false;
@@ -53,7 +54,7 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(StringNaturalIdentifierLocalizable... values) {
-        if (!found && !(values == null || values.length == 0)) {
+        if (!(found || ArrayUtils.isEmpty(values))) {
             for (StringNaturalIdentifierLocalizable value : values) {
                 field(value);
             }
@@ -62,14 +63,14 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(LocalizedEnum value) {
-        if (!found && value != null) {
+        if (!(found || value == null)) {
             found = ignoreCase ? value.getMessage().toLowerCase().contains(text) : value.getMessage().contains(text);
         }
         return this;
     }
 
     public SimpleTextSearch field(LocalizedEnum... values) {
-        if (!found && !(values == null || values.length == 0)) {
+        if (!(found || ArrayUtils.isEmpty(values))) {
             for (LocalizedEnum value : values) {
                 field(value);
             }

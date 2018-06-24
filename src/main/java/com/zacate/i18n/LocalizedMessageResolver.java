@@ -1,5 +1,6 @@
 package com.zacate.i18n;
 
+import com.zacate.collection.ArrayUtils;
 import static com.zacate.i18n.LocalizedConstants.LEFT_BRACE_STR;
 import static com.zacate.i18n.LocalizedConstants.PREFIX_TO_EXPAND_PARAMETER_KEY;
 import static com.zacate.i18n.LocalizedConstants.RIGHT_BRACE_STR;
@@ -31,7 +32,7 @@ public abstract class LocalizedMessageResolver {
     public static String translate(String bundleName, String key, Object... arguments) {
         String template = translate(bundleName, key);
 
-        if (arguments == null || arguments.length == 0) {
+        if (ArrayUtils.isEmpty(arguments)) {
             return template;
         }
 
