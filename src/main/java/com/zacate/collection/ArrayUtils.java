@@ -10,7 +10,7 @@ import java.util.Arrays;
  */
 public abstract class ArrayUtils {
 
-    public static <T> boolean isEmpty(T[] array) {
+    public static <T> boolean isEmpty(final T[] array) {
         return array == null || array.length == 0 || Arrays.asList(array).parallelStream().filter(e -> e != null).count() == 0;
     }
 

@@ -5,6 +5,7 @@ import static com.zacate.i18n.LocalizedConstants.LEFT_BRACE_STR;
 import static com.zacate.i18n.LocalizedConstants.PREFIX_TO_EXPAND_PARAMETER_KEY;
 import static com.zacate.i18n.LocalizedConstants.RIGHT_BRACE_STR;
 import java.text.MessageFormat;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -15,21 +16,25 @@ import java.util.ResourceBundle;
  */
 public abstract class LocalizedMessageResolver {
 
-    public static boolean isReservedArgument(String argument) {
+    public static boolean isReservedArgument(final String argument) {
+        Objects.requireNonNull(argument, "argument");
         return argument.startsWith(LEFT_BRACE_STR) && argument.endsWith(RIGHT_BRACE_STR);
     }
 
-    public static boolean isReservedArgumentForAutoExpansion(String argument) {
+    public static boolean isReservedArgumentForAutoExpansion(final String argument) {
+        Objects.requireNonNull(argument, "argument");
         return isReservedArgument(argument) && argument.startsWith(PREFIX_TO_EXPAND_PARAMETER_KEY, 1);
     }
 
-    public static String translate(String bundleName, String key) {
+    public static String translate(final String bundleName, final String key) {
+        Objects.requireNonNull(bundleName, "bundleName");
+        Objects.requireNonNull(key, "key");
         ResourceBundle bundle = ResourceBundle.getBundle(bundleName);
         String message = bundle.getString(key);
         return message;
     }
 
-    public static String translate(String bundleName, String key, Object... arguments) {
+    public static String translate(final String bundleName, final String key, final Object... arguments) {
         String template = translate(bundleName, key);
 
         if (ArrayUtils.isEmpty(arguments)) {

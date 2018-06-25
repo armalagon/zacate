@@ -17,8 +17,8 @@ public class SimpleTextSearch {
     private final boolean ignoreCase;
     private boolean found;
 
-    private SimpleTextSearch(String text, boolean ignoreCase) {
-        Objects.requireNonNull(text);
+    private SimpleTextSearch(final String text, final boolean ignoreCase) {
+        Objects.requireNonNull(text, "text");
         this.text = ignoreCase ? text.toLowerCase() : text;
         this.ignoreCase = ignoreCase;
         this.found = false;
@@ -28,14 +28,14 @@ public class SimpleTextSearch {
         this(text, true);
     }
 
-    public SimpleTextSearch field(CharSequence value) {
+    public SimpleTextSearch field(final CharSequence value) {
         if (!(found || value == null)) {
             found = ignoreCase ? value.toString().toLowerCase().contains(text) : value.toString().contains(text);
         }
         return this;
     }
 
-    public SimpleTextSearch field(CharSequence... values) {
+    public SimpleTextSearch field(final CharSequence... values) {
         if (!(found || ArrayUtils.isEmpty(values))) {
             for (CharSequence value : values) {
                 field(value);
@@ -44,7 +44,7 @@ public class SimpleTextSearch {
         return this;
     }
 
-    public SimpleTextSearch field(StringNaturalIdentifierLocalizable value) {
+    public SimpleTextSearch field(final StringNaturalIdentifierLocalizable value) {
         if (!(found || value == null)) {
             found = !(value.getCode() == null || value.getMessage() == null) ? ignoreCase ? value.getCode().toLowerCase().contains(text) ||
                     value.getMessage().toLowerCase().contains(text) : value.getCode().contains(text) || value.getMessage().contains(text)
@@ -53,7 +53,7 @@ public class SimpleTextSearch {
         return this;
     }
 
-    public SimpleTextSearch field(StringNaturalIdentifierLocalizable... values) {
+    public SimpleTextSearch field(final StringNaturalIdentifierLocalizable... values) {
         if (!(found || ArrayUtils.isEmpty(values))) {
             for (StringNaturalIdentifierLocalizable value : values) {
                 field(value);
@@ -62,14 +62,14 @@ public class SimpleTextSearch {
         return this;
     }
 
-    public SimpleTextSearch field(LocalizedEnum value) {
+    public SimpleTextSearch field(final LocalizedEnum value) {
         if (!(found || value == null)) {
             found = ignoreCase ? value.getMessage().toLowerCase().contains(text) : value.getMessage().contains(text);
         }
         return this;
     }
 
-    public SimpleTextSearch field(LocalizedEnum... values) {
+    public SimpleTextSearch field(final LocalizedEnum... values) {
         if (!(found || ArrayUtils.isEmpty(values))) {
             for (LocalizedEnum value : values) {
                 field(value);
@@ -82,11 +82,11 @@ public class SimpleTextSearch {
         return found;
     }
 
-    public static SimpleTextSearch search(String text) {
+    public static SimpleTextSearch search(final String text) {
         return new SimpleTextSearch(text);
     }
 
-    public static SimpleTextSearch search(String text, boolean ignoreCase) {
+    public static SimpleTextSearch search(final String text, final boolean ignoreCase) {
         return new SimpleTextSearch(text, ignoreCase);
     }
 

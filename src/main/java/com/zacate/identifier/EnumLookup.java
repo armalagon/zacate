@@ -1,7 +1,8 @@
 package com.zacate.identifier;
 
-import com.zacate.identifier.NaturalIdentifier;
+import com.zacate.bean.BeanUtils;
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -11,13 +12,18 @@ import java.io.Serializable;
  */
 public abstract class EnumLookup {
 
-    public static <E extends Enum<E> & NaturalIdentifier<T>, T extends Serializable> E findByCode(Class<E> clazz,
-            T code) {
+    private static final String ERROR_FOR_CODE_REQUIRED = "A code is required for the element [%s.%s]";
+    private static final String ERROR_FOR_CODE_NOT_FOUND = "There is no element of type [%s] with the specified code [%s]";
+
+    public static <E extends Enum<E> & NaturalIdentifier<T>, T extends Serializable> E findByCode(final Class<E> clazz, final T code) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(code, "code");
+
         for (E constant : clazz.getEnumConstants()) {
             T constantCode = ((NaturalIdentifier<T>) constant).getCode();
 
             if (constantCode == null) {
-                throw new NullPointerException("A code is required for the element [" + clazz.getName() + '.' + constant.name() + ']');
+                throw new NullPointerException(String.format(ERROR_FOR_CODE_REQUIRED, clazz.getName(), constant.name()));
             }
 
             if (constantCode.equals(code)) {
@@ -25,7 +31,43 @@ public abstract class EnumLookup {
             }
         }
 
-        throw new IllegalArgumentException("There is no element of type [" + clazz.getName() + "] with the specified code [" + code + ']');
+        throw new IllegalArgumentException(String.format(ERROR_FOR_CODE_NOT_FOUND, clazz, code));
+    }
+
+    public static Object findByCode(final Class<?> clazz, final Object code) {
+        Objects.requireNonNull(clazz, "clazz");
+        Objects.requireNonNull(code, "code");
+
+        if (!clazz.isEnum()) {
+            throw new IllegalArgumentException("The type [" + clazz.getName() + "] must be an Enum Type to perform this search");
+        }
+
+        if (BeanUtils.typeDeclaredOneInterfaceAsSuperType(clazz, StringNaturalIdentifierLocalizable.class, NaturalIdentifier.class)) {
+            Class<?> codeType = BeanUtils.typeDeclaredInterfaceAsSuperType(clazz, StringNaturalIdentifierLocalizable.class) ? String.class
+                    : BeanUtils.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
+
+            if (code.getClass() != codeType) {
+                throw new IllegalArgumentException("The [code] argument (" + code.getClass().getName() + ") must be a [" +
+                        codeType.getName() + "] to perform this search");
+            }
+
+            for (Object constant : clazz.getEnumConstants()) {
+                Object constantCode = ((NaturalIdentifier<?>) constant).getCode();
+
+                if (constantCode == null) {
+                    throw new NullPointerException(String.format(ERROR_FOR_CODE_REQUIRED, clazz.getName(), ((Enum) constant).name()));
+                }
+
+                if (constantCode.equals(code)) {
+                    return constant;
+                }
+            }
+
+            throw new IllegalArgumentException(String.format(ERROR_FOR_CODE_NOT_FOUND, clazz, code));
+        } else {
+            throw new IllegalArgumentException("The type [" + clazz.getName() + "] doesn't implement the NaturalIdentifier interface " +
+                    "to perform this search");
+        }
     }
 
 }
