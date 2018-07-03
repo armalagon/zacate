@@ -65,12 +65,13 @@ public class BusinessException extends Exception implements BundleIdentifier {
     }
 
     public String getCategory() {
-        String category = null;
+        String category;
         // Swallow any error
         try {
-            category = LocalizedMessageResolver.translate(getDefaultBaseBundleName(), this.getClass().getName());
+            category = LocalizedMessageResolver.translate(getDefaultBaseBundleName(), getClass().getName());
         } catch (RuntimeException re) {
-            // TODO At least log the error
+            // TODO Log the error
+            category = getClass().getName();
         }
         return category;
     }

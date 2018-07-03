@@ -15,9 +15,18 @@ public interface LocalizedEnum extends Localized {
             throw new UnsupportedOperationException("The class [" + this.getClass().getName() + "] must be an Enum type to be able to retrieve the description");
         }
 
-        Enum<?> enumObj = (Enum<?>) this;
+        final Enum<?> enumObj = (Enum<?>) this;
 
-        StringBuilder key = new StringBuilder(enumObj.getDeclaringClass().getName());
+        // TODO Improve this: possible code smell
+        String enumClass = enumObj.getDeclaringClass().getName();
+        int dollarSign = enumClass.indexOf('$', enumClass.lastIndexOf(DOT));
+        if (dollarSign != -1) {
+            char[] enumClass2Chars = enumClass.toCharArray();
+            enumClass2Chars[dollarSign] = DOT;
+            enumClass = new String(enumClass2Chars);
+        }
+
+        final StringBuilder key = new StringBuilder(enumClass);
         key.append(DOT);
         key.append(enumObj.name());
         return getMessage(key.toString());
