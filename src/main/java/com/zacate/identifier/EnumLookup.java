@@ -42,17 +42,17 @@ public abstract class EnumLookup {
             throw new IllegalArgumentException("The type [" + clazz.getName() + "] must be an Enum Type to perform this search");
         }
 
-        Class<?> codeInferredType = null;
+        Class<?> inferredCodeType = null;
         if (BeanUtils.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
-            codeInferredType = String.class;
+            inferredCodeType = String.class;
         } else if (BeanUtils.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
-            codeInferredType = BeanUtils.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
+            inferredCodeType = BeanUtils.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
         }
 
-        if (codeInferredType != null) {
-            if (code.getClass() != codeInferredType) {
+        if (inferredCodeType != null) {
+            if (code.getClass() != inferredCodeType) {
                 throw new IllegalArgumentException("The [code] argument (" + code.getClass().getName() + ") must be a [" +
-                        codeInferredType.getName() + "] to perform this search");
+                        inferredCodeType.getName() + "] to perform this search");
             }
 
             for (Object constant : clazz.getEnumConstants()) {
