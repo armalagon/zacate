@@ -13,12 +13,12 @@ import java.util.Objects;
  */
 public abstract class BeanUtils {
 
-    public static boolean typeDeclaredInterfaceAsSuperType(final Class<?> clazz, final Class<?> interfaceTypeToSearch) {
+    public static boolean interfaceIsSupertypeOf(final Class<?> clazz, final Class<?> interfaceTypeToSearch) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(interfaceTypeToSearch, "interfaceTypeToSearch");
 
         if (!interfaceTypeToSearch.isInterface()) {
-            throw new IllegalArgumentException("The [interfaceTypeToSearch] argument must be an Interface Type");
+            throw new IllegalArgumentException("An Interface Type is required");
         }
         if (clazz == interfaceTypeToSearch) {
             throw new IllegalArgumentException("Both arguments are referencing the same Interface Type");
@@ -27,21 +27,8 @@ public abstract class BeanUtils {
         return Arrays.asList(clazz.getInterfaces()).contains(interfaceTypeToSearch);
     }
 
-    public static boolean typeDeclaredOneInterfaceAsSuperType(final Class<?> clazz, final Class<?>... interfaces) {
-        Objects.requireNonNull(clazz, "clazz");
-        Objects.requireNonNull(interfaces, "interfaces");
-
-        for (Class<?> type : interfaces) {
-            if (typeDeclaredInterfaceAsSuperType(clazz, type)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static Type[] getTypeArgumentsFromGenericInterface(final Class<?> clazz, final Class<?> interfaceTypeToSearch) {
-        if (!typeDeclaredInterfaceAsSuperType(clazz, interfaceTypeToSearch)) {
+        if (!interfaceIsSupertypeOf(clazz, interfaceTypeToSearch)) {
             throw new IllegalArgumentException("The type [" + clazz.getName() + "] doesn't implement the interface [" +
                     interfaceTypeToSearch.getName() + ']');
         }

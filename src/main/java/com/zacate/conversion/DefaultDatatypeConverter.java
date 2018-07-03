@@ -91,9 +91,9 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         }
 
         if (clazz.isEnum()) {
-            if (BeanUtils.typeDeclaredInterfaceAsSuperType(clazz, StringNaturalIdentifierLocalizable.class)) {
+            if (BeanUtils.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
                 return (T) EnumLookup.findByCode(clazz, valueToConvert);
-            } else if (BeanUtils.typeDeclaredInterfaceAsSuperType(clazz, NaturalIdentifier.class)) {
+            } else if (BeanUtils.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
                 // TODO Handle conversion of valueToConvert to the proper type
             }
 
