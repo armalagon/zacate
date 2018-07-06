@@ -37,20 +37,20 @@ public class ReflectionConverter {
         this.excludedTypes.add(Objects.requireNonNull(clazz));
     }
 
-    protected boolean exclude(final Class<?> clazz) {
+    protected boolean isExcluded(final Class<?> clazz) {
         return excludedTypes.contains(clazz);
     }
 
     public <T> T getValue(final String valueToConvert, final Class<T> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 
-        if (valueToConvert == null || valueToConvert.length() == 0 || valueToConvert.trim().length() == 0) {
+        if (valueToConvert == null) {
             return (T) valueToConvert;
         }
         if (clazz == String.class) {
             return (T) valueToConvert;
         }
-        if (exclude(clazz)) {
+        if (isExcluded(clazz)) {
             throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
         }
 
