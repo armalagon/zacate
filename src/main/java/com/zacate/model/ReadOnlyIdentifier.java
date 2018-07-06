@@ -38,6 +38,9 @@ public abstract class ReadOnlyIdentifier<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        if (this.id == null) {
+            return false;
+        }
         final ReadOnlyIdentifier other = (ReadOnlyIdentifier) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;

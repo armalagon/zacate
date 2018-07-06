@@ -45,6 +45,9 @@ public abstract class WriteableIdentifier<T> {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        if (this.id == null) {
+            return false;
+        }
         final WriteableIdentifier other = (WriteableIdentifier) obj;
         if (!Objects.equals(this.id, other.id)) {
             return false;
