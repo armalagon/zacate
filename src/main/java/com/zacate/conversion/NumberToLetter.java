@@ -1,5 +1,6 @@
 package com.zacate.conversion;
 
+import com.zacate.number.NumberUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
@@ -42,7 +43,7 @@ public abstract class NumberToLetter {
         this.num = num.intValue();
         // TODO Refactor this into a function
         final BigDecimal remainder = num.remainder(BigDecimal.ONE);
-        this.decimalPart = remainder.compareTo(BigDecimal.ZERO) != 0 ? remainder.multiply(BD_ONE_HUNDRED)
+        this.decimalPart = NumberUtils.isDifferentFromZero(remainder) ? remainder.multiply(BD_ONE_HUNDRED)
                 .setScale(0, RoundingMode.HALF_UP).intValue() : -1;
         this.currency = currency;
         this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
