@@ -2,10 +2,7 @@ package com.zacate.conversion;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 /**
  *
@@ -19,9 +16,12 @@ public abstract class NumberToLetter {
 
     protected static final char SPACE = ' ';
 
+    private static final String NUMBER_BUNDLE = "com.zacate.conversion.numbers";
+
     protected final int num;
     protected final int decimalPart;
     protected final String currency;
+    private final ResourceBundle bundle;
     protected final List<GroupedNumber> groups;
     protected final String letter;
 
@@ -29,6 +29,7 @@ public abstract class NumberToLetter {
         this.num = num;
         this.decimalPart = -1;
         this.currency = null;
+        this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
         this.groups = createGroups();
         this.letter = translate();
     }
@@ -39,10 +40,12 @@ public abstract class NumberToLetter {
 
     public NumberToLetter(final BigDecimal num, final String currency) {
         this.num = num.intValue();
+        // TODO Refactor this into a function
         final BigDecimal remainder = num.remainder(BigDecimal.ONE);
         this.decimalPart = remainder.compareTo(BigDecimal.ZERO) != 0 ? remainder.multiply(BD_ONE_HUNDRED)
                 .setScale(0, RoundingMode.HALF_UP).intValue() : -1;
         this.currency = currency;
+        this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
         this.groups = createGroups();
         this.letter = translate();
     }
@@ -50,6 +53,12 @@ public abstract class NumberToLetter {
     public abstract String translateNumber();
 
     public abstract String translateCurrency();
+
+    protected abstract Locale numberLocale();
+
+    protected String getLetter(int number) {
+        return bundle.getString(String.valueOf(number));
+    }
 
     protected String translate() {
         final StringBuilder resp = new StringBuilder();
