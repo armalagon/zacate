@@ -52,7 +52,7 @@ public abstract class EnumLookup {
         if (inferredCodeType != null) {
             if (code.getClass() != inferredCodeType) {
                 throw new IllegalArgumentException("The [code] argument (" + code.getClass().getName() + ") must be a [" +
-                        inferredCodeType.getName() + "] to perform this search");
+                        inferredCodeType.getName() + "] type to perform this search");
             }
 
             for (Object constant : clazz.getEnumConstants()) {
