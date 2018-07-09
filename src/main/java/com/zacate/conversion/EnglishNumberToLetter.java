@@ -32,7 +32,11 @@ public class EnglishNumberToLetter extends NumberToLetter {
     private static final String MILLION = "million";
     private static final String DIVIDE_BY_ONE_HUNDRED = "/100";
 
-    public EnglishNumberToLetter(final int num) {
+    public EnglishNumberToLetter(final long num, final int decimalPart, final String currency) {
+        super(num, decimalPart, currency);
+    }
+
+    public EnglishNumberToLetter(final long num) {
         super(num);
     }
 

@@ -32,7 +32,11 @@ public class SpanishNumberToLetter extends NumberToLetter {
     private static final String WITH = "con";
     private static final String DIVIDE_BY_ONE_HUNDRED = "/100";
 
-    public SpanishNumberToLetter(final int num) {
+    public SpanishNumberToLetter(final long num, final int decimalPart, final String currency) {
+        super(num, decimalPart, currency);
+    }
+
+    public SpanishNumberToLetter(final long num) {
         super(num);
     }
 

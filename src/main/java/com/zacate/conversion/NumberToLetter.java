@@ -16,20 +16,27 @@ public abstract class NumberToLetter {
 
     private static final String NUMBER_BUNDLE = "com.zacate.conversion.numbers";
 
-    protected final int num;
+    protected final long num;
     protected final int decimalPart;
     protected final String currency;
     private final ResourceBundle bundle;
     protected final List<GroupedNumber> groups;
     protected final String letter;
 
-    public NumberToLetter(final int num) {
+    public NumberToLetter(final long num, final int decimalPart, final String currency) {
+        if (isOutOfRange(num)) {
+            throw new IllegalArgumentException("Number [" + num + "] is out of boundaries [0, 999_999_999_999]");
+        }
         this.num = num;
-        this.decimalPart = -1;
-        this.currency = null;
+        this.decimalPart = decimalPart;
+        this.currency = currency;
         this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
         this.groups = createGroups();
         this.letter = translate();
+    }
+
+    public NumberToLetter(final long num) {
+        this(num, -1, null);
     }
 
     public NumberToLetter(final BigDecimal num) {
@@ -37,12 +44,11 @@ public abstract class NumberToLetter {
     }
 
     public NumberToLetter(final BigDecimal num, final String currency) {
-        this.num = num.intValue();
-        this.decimalPart = NumberUtils.getDecimalPart(num);
-        this.currency = currency;
-        this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
-        this.groups = createGroups();
-        this.letter = translate();
+        this(num.longValue(), NumberUtils.getDecimalPart(num), currency);
+    }
+
+    private boolean isOutOfRange(final long num) {
+        return !(num >= 0l && num <= 999_999_999_999l);
     }
 
     protected abstract String translateNumber();
@@ -144,7 +150,7 @@ public abstract class NumberToLetter {
         return _groups;
     }
 
-    public int getNum() {
+    public long getNum() {
         return num;
     }
 
@@ -160,7 +166,7 @@ public abstract class NumberToLetter {
         return letter;
     }
 
-    public static NumberToLetter getInstance(final int num) {
+    public static NumberToLetter getInstance(final long num) {
         // TODO Refactor this code based on a configurable Locale
         final Locale spanish = new Locale("spa");
 
