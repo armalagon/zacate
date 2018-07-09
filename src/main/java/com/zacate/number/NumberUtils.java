@@ -29,7 +29,15 @@ public abstract class NumberUtils {
         return !isOne(num);
     }
 
-    public static int getDecimalPart(BigDecimal num) {
+    public static int getDecimalPart(final BigDecimal num) {
+        return getDecimalPart(num, 2);
+    }
+
+    public static int getDecimalPart(final BigDecimal num, final int scale) {
+        if (scale <= 0) {
+            throw new IllegalArgumentException("The scale must be a positive number");
+        }
+
         int decimalPart = -1;
 
         if (num == null || isZero(num) || isOne(num)) {
@@ -37,7 +45,12 @@ public abstract class NumberUtils {
         }
 
         final BigDecimal remainder = num.remainder(BigDecimal.ONE);
-        return isDifferentFromZero(remainder) ? remainder.multiply(BD_ONE_HUNDRED).setScale(0, RoundingMode.HALF_UP).intValue() : -1;
+        if (isDifferentFromZero(remainder)) {
+            final int tenToPowerOf = (int) Math.pow(10, scale);
+            return remainder.multiply(new BigDecimal(tenToPowerOf)).setScale(0, RoundingMode.HALF_UP).intValue();
+        } else {
+            return -1;
+        }
     }
 
 }
