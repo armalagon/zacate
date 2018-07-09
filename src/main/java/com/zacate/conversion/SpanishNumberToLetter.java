@@ -29,7 +29,6 @@ public class SpanishNumberToLetter extends NumberToLetter {
     private static final String MILLION_SINGULAR = "millon";
     private static final String MILLION_PLURAL = "millones";
     private static final char AND = 'y';
-    private static final char SPACE = ' ';
     private static final String WITH = "con";
     private static final String DIVIDE_BY_ONE_HUNDRED = "/100";
 
@@ -52,7 +51,7 @@ public class SpanishNumberToLetter extends NumberToLetter {
     }
 
     @Override
-    public String translateNumber() {
+    protected String translateNumber() {
         final StringBuilder resp = new StringBuilder();
 
         for (final GroupedNumber group : groups) {
@@ -104,22 +103,12 @@ public class SpanishNumberToLetter extends NumberToLetter {
     }
 
     @Override
-    public String translateCurrency() {
-        if (currency == null) {
-            return null;
-        }
-
+    protected String translateDecimalPart() {
         final StringBuilder resp = new StringBuilder();
-        resp.append(currency);
-
-        if (decimalPart != -1) {
-            resp.append(SPACE);
-            resp.append(WITH);
-            resp.append(SPACE);
-            resp.append(decimalPart);
-            resp.append(DIVIDE_BY_ONE_HUNDRED);
-        }
-
+        resp.append(WITH);
+        resp.append(SPACE);
+        resp.append(decimalPart);
+        resp.append(DIVIDE_BY_ONE_HUNDRED);
         return resp.toString();
     }
 

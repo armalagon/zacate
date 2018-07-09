@@ -51,7 +51,7 @@ public class EnglishNumberToLetter extends NumberToLetter {
     }
 
     @Override
-    public String translateNumber() {
+    protected String translateNumber() {
         final StringBuilder resp = new StringBuilder();
 
         for (final GroupedNumber group : groups) {
@@ -97,21 +97,12 @@ public class EnglishNumberToLetter extends NumberToLetter {
     }
 
     @Override
-    public String translateCurrency() {
-        if (currency == null) {
-            return null;
-        }
-
+    protected String translateDecimalPart() {
         final StringBuilder resp = new StringBuilder();
-        if (decimalPart != -1) {
-            resp.append(AND);
-            resp.append(SPACE);
-            resp.append(decimalPart);
-            resp.append(DIVIDE_BY_ONE_HUNDRED);
-            resp.append(SPACE);
-        }
-        resp.append(currency);
-
+        resp.append(AND);
+        resp.append(SPACE);
+        resp.append(decimalPart);
+        resp.append(DIVIDE_BY_ONE_HUNDRED);
         return resp.toString();
     }
 

@@ -2,7 +2,6 @@ package com.zacate.conversion;
 
 import com.zacate.number.NumberUtils;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 /**
@@ -12,8 +11,6 @@ import java.util.*;
  * @since 1.0
  */
 public abstract class NumberToLetter {
-
-    protected static final BigDecimal BD_ONE_HUNDRED = new BigDecimal(100);
 
     protected static final char SPACE = ' ';
 
@@ -41,19 +38,16 @@ public abstract class NumberToLetter {
 
     public NumberToLetter(final BigDecimal num, final String currency) {
         this.num = num.intValue();
-        // TODO Refactor this into a function
-        final BigDecimal remainder = num.remainder(BigDecimal.ONE);
-        this.decimalPart = NumberUtils.isDifferentFromZero(remainder) ? remainder.multiply(BD_ONE_HUNDRED)
-                .setScale(0, RoundingMode.HALF_UP).intValue() : -1;
+        this.decimalPart = NumberUtils.getDecimalPart(num);
         this.currency = currency;
         this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
         this.groups = createGroups();
         this.letter = translate();
     }
 
-    public abstract String translateNumber();
+    protected abstract String translateNumber();
 
-    public abstract String translateCurrency();
+    protected abstract String translateDecimalPart();
 
     protected abstract Locale numberLocale();
 
@@ -61,14 +55,21 @@ public abstract class NumberToLetter {
         return bundle.getString(String.valueOf(number));
     }
 
+    private void doAppendNewPart(final StringBuilder sb, final String part) {
+        sb.append(SPACE);
+        sb.append(part);
+    }
+
     protected String translate() {
         final StringBuilder resp = new StringBuilder();
         resp.append(translateNumber());
 
-        final String currPart = translateCurrency();
-        if (currPart != null) {
-            resp.append(SPACE);
-            resp.append(currPart);
+        if (decimalPart != -1) {
+            doAppendNewPart(resp, translateDecimalPart());
+        }
+
+        if (currency != null) {
+            doAppendNewPart(resp, currency);
         }
 
         return resp.toString();
@@ -160,6 +161,7 @@ public abstract class NumberToLetter {
     }
 
     public static NumberToLetter getInstance(final int num) {
+        // TODO Refactor this code based on a configurable Locale
         final Locale spanish = new Locale("spa");
 
         if (Locale.getDefault().getLanguage().equals(spanish.getLanguage())) {
