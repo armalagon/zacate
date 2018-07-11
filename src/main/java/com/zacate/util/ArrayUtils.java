@@ -1,4 +1,4 @@
-package com.zacate.collection;
+package com.zacate.util;
 
 import java.util.Arrays;
 

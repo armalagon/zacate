@@ -1,6 +1,7 @@
 package com.zacate.conversion;
 
-import com.zacate.number.NumberUtils;
+import com.zacate.util.NumberUtils;
+import com.zacate.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.BiFunction;
@@ -172,8 +173,8 @@ public abstract class NumberToLetter {
     public String getLetter(final BiFunction<String, String, String> currencyAndDecimalPartCombiner) {
         final StringBuilder resp = new StringBuilder(number2Letter);
         if (!(decimalPart == -1 && currency == null)) {
-            String _currency = currency != null ? currency : "";
-            String _decimalPart = decimalPart != -1 ? translateDecimalPart() : "";
+            String _currency = StringUtils.emptyIfNull(currency);
+            String _decimalPart = decimalPart != -1 ? translateDecimalPart() : StringUtils.EMPTY;
             doAppendNewPart(resp, currencyAndDecimalPartCombiner.apply(_currency, _decimalPart));
         }
         return resp.toString();

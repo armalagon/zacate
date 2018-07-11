@@ -1,4 +1,4 @@
-package com.zacate.number;
+package com.zacate.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

@@ -1,6 +1,6 @@
 package com.zacate.jdbc;
 
-import com.zacate.collection.ArrayUtils;
+import com.zacate.util.ArrayUtils;
 import java.time.LocalDate;
 
 /**

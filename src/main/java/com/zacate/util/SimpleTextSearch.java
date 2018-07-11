@@ -1,6 +1,5 @@
-package com.zacate.text;
+package com.zacate.util;
 
-import com.zacate.collection.ArrayUtils;
 import com.zacate.i18n.LocalizedEnum;
 import com.zacate.identifier.StringNaturalIdentifierLocalizable;
 import java.util.Objects;

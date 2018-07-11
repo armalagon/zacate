@@ -1,6 +1,6 @@
 package com.zacate.i18n;
 
-import com.zacate.collection.ArrayUtils;
+import com.zacate.util.ArrayUtils;
 import static com.zacate.i18n.LocalizedConstants.LEFT_BRACE_STR;
 import static com.zacate.i18n.LocalizedConstants.PREFIX_TO_EXPAND_PARAMETER_KEY;
 import static com.zacate.i18n.LocalizedConstants.RIGHT_BRACE_STR;
