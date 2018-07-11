@@ -3,6 +3,7 @@ package com.zacate.conversion;
 import com.zacate.number.NumberUtils;
 import java.math.BigDecimal;
 import java.util.*;
+import java.util.function.BiFunction;
 
 /**
  *
@@ -12,7 +13,7 @@ import java.util.*;
  */
 public abstract class NumberToLetter {
 
-    protected static final char SPACE = ' ';
+    public static final char SPACE = ' ';
 
     private static final String NUMBER_BUNDLE = "com.zacate.conversion.numbers";
 
@@ -21,6 +22,7 @@ public abstract class NumberToLetter {
     protected final String currency;
     private final ResourceBundle bundle;
     protected final List<GroupedNumber> groups;
+    protected final String number2Letter;
     protected final String letter;
 
     public NumberToLetter(final long num, final int decimalPart, final String currency) {
@@ -32,6 +34,7 @@ public abstract class NumberToLetter {
         this.currency = currency;
         this.bundle = ResourceBundle.getBundle(NUMBER_BUNDLE, numberLocale());
         this.groups = createGroups();
+        this.number2Letter = translateNumber();
         this.letter = translate();
     }
 
@@ -67,41 +70,51 @@ public abstract class NumberToLetter {
     }
 
     protected String translate() {
-        final StringBuilder resp = new StringBuilder();
-        resp.append(translateNumber());
-
+        final StringBuilder resp = new StringBuilder(number2Letter);
         if (decimalPart != -1) {
             doAppendNewPart(resp, translateDecimalPart());
         }
-
         if (currency != null) {
             doAppendNewPart(resp, currency);
         }
-
         return resp.toString();
     }
 
     protected class GroupedNumber {
-        protected final Integer number;
+        protected final int number;
         protected final int[] numbers;
         protected final int tenToPowerOf; // 10^n
         protected final int count;
         protected final int tensIfApply;
 
-        public GroupedNumber(final Integer number, final int[] numbers, final int tenToPowerOf) {
+        public GroupedNumber(final int number, final int[] numbers, final int tenToPowerOf) {
             this.number = number;
-            this.numbers = numbers;
-            this.count = numbers.length;
             this.tenToPowerOf = tenToPowerOf;
-            if (this.number >= 10 && this.number <= 99) {
-                this.tensIfApply = this.number;
-            } else if (this.number >= 100 && this.number <= 999) {
+
+            // Remove unnecesary zeroes
+            if (number != 0) {
+                int zeroes = 0;
                 int sum = 0;
-                for (int i = 1; i < this.count; i++) {
-                    sum += numbers[i];
+                for (int i = 0; i < numbers.length; i++) {
+                    if (numbers[i] == 0) {
+                        ++zeroes;
+                    }
+                    if ((number >= 10 && number <= 99) || (number >= 100 && number <= 999 & i > 0)) {
+                        sum += numbers[i];
+                    }
                 }
+                int[] _numbers = new int[numbers.length - zeroes];
+                for (int i = 0, j = 0; i < numbers.length; i++) {
+                    if (numbers[i] != 0) {
+                        _numbers[j++] = numbers[i];
+                    }
+                }
+                this.numbers = _numbers;
+                this.count = this.numbers.length;
                 this.tensIfApply = sum != 0 ? sum : -1;
             } else {
+                this.numbers = numbers;
+                this.count = numbers.length;
                 this.tensIfApply = -1;
             }
         }
@@ -119,29 +132,19 @@ public abstract class NumberToLetter {
         final List<GroupedNumber> _groups = new ArrayList<>(threeDigitsCount);
 
         int take = digits.length - (threeDigitsCount - 1) * 3;
+        int partialNum = -1;
+        int digit = -1;
         for (int i = 0, k = 0; i < threeDigitsCount; i++) {
-            final int[] groupedParts = new int[take];
-            int partialNum = 0;
-            int zeroes = 0;
+            partialNum = 0;
+            int[] parts = new int[take];
             for (int j = 0; j < take; j++) {
-                final int digit = Character.digit(digits[k++], 10);
-
-                if ((digit == 0 && i == 0 && j > 0) || (digit == 0 && i > 0)) {
-                    ++zeroes;
-                }
-
-                groupedParts[j] = digit * (int) Math.pow(10, take - j - 1);
-                partialNum += groupedParts[j];
+                digit = Character.digit(digits[k++], 10);
+                parts[j] = digit * (int) Math.pow(10, take - j - 1);
+                partialNum += parts[j];
             }
 
             if (!(partialNum == 0 && i > 0)) {
-                final int[] clonedGroupedParts = new int[take - zeroes];
-                for (int x = 0, y = 0; x < groupedParts.length; x++) {
-                    if (!((groupedParts[x] == 0 && i > 0) || (groupedParts[x] == 0 && i == 0 && x > 0))) {
-                        clonedGroupedParts[y++] = groupedParts[x];
-                    }
-                }
-                _groups.add(new GroupedNumber(partialNum, clonedGroupedParts, digits.length - k));
+                _groups.add(new GroupedNumber(partialNum, parts, digits.length - k));
             }
 
             take = 3;
@@ -164,6 +167,16 @@ public abstract class NumberToLetter {
 
     public String getLetter() {
         return letter;
+    }
+
+    public String getLetter(final BiFunction<String, String, String> currencyAndDecimalPartCombiner) {
+        final StringBuilder resp = new StringBuilder(number2Letter);
+        if (!(decimalPart == -1 && currency == null)) {
+            String _currency = currency != null ? currency : "";
+            String _decimalPart = decimalPart != -1 ? translateDecimalPart() : "";
+            doAppendNewPart(resp, currencyAndDecimalPartCombiner.apply(_currency, _decimalPart));
+        }
+        return resp.toString();
     }
 
     public static NumberToLetter getInstance(final long num) {
