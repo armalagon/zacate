@@ -54,12 +54,10 @@ public class ReflectionConverter {
             throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
         }
 
-        Constructor<?> strConstructor;
-        Method strFactoryMethod;
         Object convertedValue;
 
         try {
-            strConstructor = clazz.getConstructor(String.class);
+            Constructor<?> strConstructor = clazz.getConstructor(String.class);
             convertedValue = strConstructor.newInstance(valueToConvert);
             return (T) convertedValue;
         } catch (NoSuchMethodException | SecurityException nsmOrSecEx) {
@@ -69,7 +67,7 @@ public class ReflectionConverter {
         }
 
         try {
-            strFactoryMethod = clazz.getMethod(STRING_FACTORY_METHOD_NAME, String.class);
+            Method strFactoryMethod = clazz.getMethod(STRING_FACTORY_METHOD_NAME, String.class);
             if (Modifier.isStatic(strFactoryMethod.getModifiers())) {
                 convertedValue = strFactoryMethod.invoke(null, valueToConvert);
                 return (T) convertedValue;
