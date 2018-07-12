@@ -1,9 +1,12 @@
 package com.zacate.bean;
 
-import static com.zacate.i18n.LocalizedConstants.DOT;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Objects;
 
 /**
@@ -45,20 +48,13 @@ public abstract class BeanUtils {
         throw new IllegalArgumentException("The type [" + interfaceTypeToSearch.getName() + "] is not a Generic Interface");
     }
 
-    public static String getEnumClassnameWithoutDollarSign(final Enum<?> instance) {
-        // TODO Consider possible Enum class declared within a nested inner class
-        if (instance.getDeclaringClass().getEnclosingClass() != null) {
-            String classname = instance.getDeclaringClass().getName();
-            final int dollarSign = classname.indexOf('$', instance.getDeclaringClass().getEnclosingClass().getName().length());
-            if (dollarSign != -1) {
-                char[] classname2Chars = classname.toCharArray();
-                classname2Chars[dollarSign] = DOT;
-                classname = new String(classname2Chars);
-                return classname;
-            }
-        }
+    public static boolean isIntegerType(final Object value) {
+        return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
+    }
 
-        return instance.getDeclaringClass().getName();
+    public static boolean isDateType(final Object value) {
+        return value instanceof Date || value instanceof GregorianCalendar || value instanceof java.sql.Date ||
+                value instanceof java.sql.Timestamp || value instanceof LocalDate || value instanceof LocalDateTime;
     }
 
 }

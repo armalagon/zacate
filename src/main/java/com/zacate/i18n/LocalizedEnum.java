@@ -1,6 +1,5 @@
 package com.zacate.i18n;
 
-import com.zacate.bean.BeanUtils;
 import static com.zacate.i18n.LocalizedConstants.DOT;
 
 /**
@@ -17,7 +16,7 @@ public interface LocalizedEnum extends Localized {
         }
 
         final Enum<?> enumObj = (Enum<?>) this;
-        final StringBuilder key = new StringBuilder(BeanUtils.getEnumClassnameWithoutDollarSign(enumObj));
+        final StringBuilder key = new StringBuilder(enumObj.getDeclaringClass().getCanonicalName());
         key.append(DOT);
         key.append(enumObj.name());
         return getMessage(key.toString());
