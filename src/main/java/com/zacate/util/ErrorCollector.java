@@ -1,10 +1,6 @@
 package com.zacate.util;
 
-import com.zacate.exception.BusinessException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -21,14 +17,12 @@ public class ErrorCollector {
         this.errors = new ArrayList<>();
     }
 
-    public void add(BusinessException ex) {
-        Objects.requireNonNull(ex, "businessException");
-        errors.add(ex);
+    public void add(Exception ex) {
+        errors.add(Objects.requireNonNull(ex, "ex"));
     }
 
-    public void add(Exception ex) {
-        Objects.requireNonNull(ex, "exception");
-        errors.add(ex);
+    public void addAll(Collection<Exception> exs) {
+        errors.addAll(Objects.requireNonNull(exs, "exs"));
     }
 
     public List<Exception> getErrors() {
