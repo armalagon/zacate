@@ -1,9 +1,9 @@
 package com.zacate.i18n;
 
-import com.zacate.util.ArrayUtils;
 import static com.zacate.i18n.LocalizedConstants.LEFT_BRACE_STR;
 import static com.zacate.i18n.LocalizedConstants.PREFIX_TO_EXPAND_PARAMETER_KEY;
 import static com.zacate.i18n.LocalizedConstants.RIGHT_BRACE_STR;
+import com.zacate.util.ArrayUtils;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -45,8 +45,8 @@ public abstract class LocalizedMessageResolver {
         Object[] translatedArguments = new Object[arguments.length];
 
         for (int i = 0; i < arguments.length; i++) {
-            if (arguments[i] instanceof LocalizedEnum) {
-                translatedArguments[i] = ((LocalizedEnum) arguments[i]).getMessage();
+            if (arguments[i] instanceof Localized) {
+                translatedArguments[i] = ((Localized) arguments[i]).getMessage();
             } else if (arguments[i] instanceof String) {
                 String argument = (String) arguments[i];
 

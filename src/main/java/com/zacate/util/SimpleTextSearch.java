@@ -1,6 +1,6 @@
 package com.zacate.util;
 
-import com.zacate.i18n.LocalizedEnum;
+import com.zacate.i18n.Localized;
 import com.zacate.identifier.StringNaturalIdentifierLocalizable;
 import java.util.Objects;
 
@@ -61,16 +61,16 @@ public class SimpleTextSearch {
         return this;
     }
 
-    public SimpleTextSearch field(final LocalizedEnum value) {
+    public SimpleTextSearch field(final Localized value) {
         if (!(found || value == null)) {
             found = ignoreCase ? value.getMessage().toLowerCase().contains(text) : value.getMessage().contains(text);
         }
         return this;
     }
 
-    public SimpleTextSearch field(final LocalizedEnum... values) {
+    public SimpleTextSearch field(final Localized... values) {
         if (!(found || ArrayUtils.isEmpty(values))) {
-            for (LocalizedEnum value : values) {
+            for (Localized value : values) {
                 field(value);
             }
         }
