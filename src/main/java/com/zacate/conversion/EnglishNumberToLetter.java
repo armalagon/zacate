@@ -102,8 +102,7 @@ public class EnglishNumberToLetter extends NumberToLetter {
 
     @Override
     protected String translateDecimalPart() {
-        final StringBuilder resp = new StringBuilder();
-        resp.append(AND);
+        final StringBuilder resp = new StringBuilder(AND);
         resp.append(SPACE);
         resp.append(decimalPart);
         resp.append(DIVIDE_BY_ONE_HUNDRED);

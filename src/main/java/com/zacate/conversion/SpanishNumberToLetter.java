@@ -108,8 +108,7 @@ public class SpanishNumberToLetter extends NumberToLetter {
 
     @Override
     protected String translateDecimalPart() {
-        final StringBuilder resp = new StringBuilder();
-        resp.append(WITH);
+        final StringBuilder resp = new StringBuilder(WITH);
         resp.append(SPACE);
         resp.append(decimalPart);
         resp.append(DIVIDE_BY_ONE_HUNDRED);
