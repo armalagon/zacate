@@ -44,6 +44,7 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         for (String isoDateFormat : isoDateFormats) {
             try {
                 // TODO Remarks: Handle LOCALE
+                // TODO Use new date/time api
                 SimpleDateFormat dateFormatter = new SimpleDateFormat(isoDateFormat);
                 dateFormatter.setLenient(false);
                 return dateFormatter.parse(dateValue);
@@ -75,13 +76,13 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
             } else {
                 for (T constant : clazz.getEnumConstants()) {
                     String name = ((Enum) constant).name();
-                    if (name.equals(valueToConvert)) {
+                    if (name.equalsIgnoreCase(valueToConvert)) {
                         return constant;
                     }
                 }
             }
 
-            throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
+            throw new UnsupportedOperationException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
         }
 
         try {

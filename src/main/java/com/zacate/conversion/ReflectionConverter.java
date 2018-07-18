@@ -48,7 +48,7 @@ public class ReflectionConverter {
             return (T) valueToConvert;
         }
         if (isExcluded(clazz)) {
-            throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
+            throw new UnsupportedOperationException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
         }
 
         Object convertedValue;
@@ -75,6 +75,6 @@ public class ReflectionConverter {
             throw new ReflectionException(String.format(ERROR_FOR_STATIC_FACTORY_INSTANTIATION, clazz.getName()), ex);
         }
 
-        throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
+        throw new UnsupportedOperationException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
     }
 }
