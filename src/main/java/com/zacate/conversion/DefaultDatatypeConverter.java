@@ -72,6 +72,13 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
                 Object code = getValue(valueToConvert, codeType);
                 convertedValue = EnumLookup.findByCode(clazz, code);
                 return (T) convertedValue;
+            } else {
+                for (T constant : clazz.getEnumConstants()) {
+                    String name = ((Enum) constant).name();
+                    if (name.equals(valueToConvert)) {
+                        return constant;
+                    }
+                }
             }
 
             throw new IllegalArgumentException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));

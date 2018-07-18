@@ -44,10 +44,7 @@ public class ReflectionConverter {
     public <T> T getValue(final String valueToConvert, final Class<T> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 
-        if (valueToConvert == null) {
-            return (T) valueToConvert;
-        }
-        if (clazz == String.class) {
+        if (valueToConvert == null || clazz == String.class) {
             return (T) valueToConvert;
         }
         if (isExcluded(clazz)) {

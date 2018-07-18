@@ -52,7 +52,7 @@ public abstract class BeanUtils {
         return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
     }
 
-    public static boolean isDateType(final Object value) {
+    public static boolean isDateTimeType(final Object value) {
         return value instanceof Date || value instanceof GregorianCalendar || value instanceof java.sql.Date ||
                 value instanceof java.sql.Timestamp || value instanceof LocalDate || value instanceof LocalDateTime;
     }
