@@ -1,6 +1,5 @@
 package com.zacate.conversion;
 
-import com.zacate.i18n.RegionalConstants;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Locale;
@@ -13,6 +12,8 @@ import java.util.Map;
  * @since 1.0
  */
 public class SpanishNumberToLetter extends NumberToLetter {
+
+    private static final Locale SPANISH = new Locale("es");
 
     private static final Map<Integer, String> SPECIAL_NUMBERS = new HashMap<>();
     static {
@@ -117,7 +118,7 @@ public class SpanishNumberToLetter extends NumberToLetter {
 
     @Override
     protected Locale numberLocale() {
-        return RegionalConstants.SPANISH;
+        return SPANISH;
     }
 
 }
