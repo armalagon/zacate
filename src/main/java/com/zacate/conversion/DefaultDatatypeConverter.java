@@ -4,8 +4,8 @@ import com.zacate.bean.BeanUtils;
 import com.zacate.identifier.EnumLookup;
 import com.zacate.identifier.NaturalIdentifier;
 import com.zacate.identifier.StringNaturalIdentifierLocalizable;
+import com.zacate.util.FormatUtils;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,11 +43,7 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         ParseException pe = null;
         for (String isoDateFormat : isoDateFormats) {
             try {
-                // TODO Remarks: Handle LOCALE
-                // TODO Use new date/time api
-                SimpleDateFormat dateFormatter = new SimpleDateFormat(isoDateFormat);
-                dateFormatter.setLenient(false);
-                return dateFormatter.parse(dateValue);
+                return FormatUtils.dateParse(dateValue, isoDateFormat);
             } catch (ParseException ex) {
                 // TODO Log error
                 pe = ex;
