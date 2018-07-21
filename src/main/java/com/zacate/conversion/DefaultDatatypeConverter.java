@@ -43,7 +43,7 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         ParseException pe = null;
         for (String isoDateFormat : isoDateFormats) {
             try {
-                return FormatUtils.dateParse(dateValue, isoDateFormat);
+                return FormatUtils.parseDate(dateValue, isoDateFormat);
             } catch (ParseException ex) {
                 // TODO Log error
                 pe = ex;

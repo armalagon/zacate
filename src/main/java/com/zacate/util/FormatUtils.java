@@ -26,16 +26,16 @@ public abstract class FormatUtils {
         return new DecimalFormat(pattern, new DecimalFormatSymbols(locale));
     }
 
-    public static String decimalFormat(final long number, final String pattern, final Locale locale) {
+    public static String formatDecimal(final long number, final String pattern, final Locale locale) {
         return getDecimalFormatFor(pattern, locale).format(number);
     }
 
-    public static String decimalFormat(final BigDecimal number, final String pattern, final Locale locale) {
+    public static String formatDecimal(final BigDecimal number, final String pattern, final Locale locale) {
         Objects.requireNonNull(number, "number");
         return getDecimalFormatFor(pattern, locale).format(number);
     }
 
-    public static String dateFormat(final Date date, final String pattern, final Locale locale) {
+    public static String formatDate(final Date date, final String pattern, final Locale locale) {
         Objects.requireNonNull(date, "date");
         Objects.requireNonNull(pattern, "pattern");
         Objects.requireNonNull(locale, "locale");
@@ -44,42 +44,26 @@ public abstract class FormatUtils {
         return sdf.format(date);
     }
 
-    public static Date dateParse(final String strDate, final String pattern) throws ParseException {
+    public static String formatDate(final LocalDate date, final String pattern, final Locale locale) {
+        Objects.requireNonNull(date, "date");
+        Objects.requireNonNull(pattern, "pattern");
+        Objects.requireNonNull(locale, "locale");
+        return date.format(DateTimeFormatter.ofPattern(pattern, locale));
+    }
+
+    public static String formatDate(final LocalDateTime date, final String pattern, final Locale locale) {
+        Objects.requireNonNull(date, "date");
+        Objects.requireNonNull(pattern, "pattern");
+        Objects.requireNonNull(locale, "locale");
+        return date.format(DateTimeFormatter.ofPattern(pattern, locale));
+    }
+
+    public static Date parseDate(final String strDate, final String pattern) throws ParseException {
         Objects.requireNonNull(strDate, "strDate");
         Objects.requireNonNull(pattern, "pattern");
         SimpleDateFormat sdf = new SimpleDateFormat(pattern);
         sdf.setLenient(false);
         return sdf.parse(strDate);
-    }
-
-    public static String dateFormat(final LocalDate date, final String pattern, final Locale locale) {
-        Objects.requireNonNull(date, "date");
-        Objects.requireNonNull(pattern, "pattern");
-        Objects.requireNonNull(locale, "locale");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
-        return date.format(formatter);
-    }
-
-    public static String dateFormat(final LocalDate date, final DateTimeFormatter formatter, final Locale locale) {
-        Objects.requireNonNull(date, "date");
-        Objects.requireNonNull(formatter, "formatter");
-        Objects.requireNonNull(locale, "locale");
-        return date.format(formatter);
-    }
-
-    public static String dateFormat(final LocalDateTime date, final String pattern, final Locale locale) {
-        Objects.requireNonNull(date, "date");
-        Objects.requireNonNull(pattern, "pattern");
-        Objects.requireNonNull(locale, "locale");
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, locale);
-        return date.format(formatter);
-    }
-
-    public static String dateFormat(final LocalDateTime date, final DateTimeFormatter formatter, final Locale locale) {
-        Objects.requireNonNull(date, "date");
-        Objects.requireNonNull(formatter, "formatter");
-        Objects.requireNonNull(locale, "locale");
-        return date.format(formatter);
     }
 
 }

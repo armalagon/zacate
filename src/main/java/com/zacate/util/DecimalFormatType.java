@@ -21,12 +21,12 @@ public enum DecimalFormatType implements LocaleAwareDecimalFormat {
 
     @Override
     public String format(final long number, final Locale locale) {
-        return FormatUtils.decimalFormat(number, pattern, locale);
+        return FormatUtils.formatDecimal(number, pattern, locale);
     }
 
     @Override
     public String format(final BigDecimal number, final Locale locale) {
-        return FormatUtils.decimalFormat(number, pattern, locale);
+        return FormatUtils.formatDecimal(number, pattern, locale);
     }
 
 }
