@@ -13,12 +13,24 @@
         <maven.compiler.target>1.8</maven.compiler.target>
 
         <jooq.version>3.11.0</jooq.version>
-        <jacoco.version>0.8.1</jacoco.version>
+        <omnifaces.version>2.6.9</omnifaces.version>
 
+        <jacoco.version>0.8.1</jacoco.version>
         <junit.version>4.12</junit.version>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>javax</groupId>
+            <artifactId>javaee-web-api</artifactId>
+            <version>7.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.omnifaces</groupId>
+            <artifactId>omnifaces</artifactId>
+            <version>${omnifaces.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.jooq</groupId>
             <artifactId>jooq-codegen</artifactId>
