@@ -43,7 +43,7 @@ public class BusinessException extends Exception implements BundleIdentifier {
     }
 
     public BusinessException(String errorCode, boolean expandKeyBasedOnCurrentClass, Object... arguments) {
-        this.errorCode = expandKeyBasedOnCurrentClass ? BundleKeyGenerator.expandKeyUsing(errorCode, this.getClass()) : errorCode;
+        this.errorCode = expandKeyBasedOnCurrentClass ? BundleKeyGenerator.createKeyUsing(errorCode, this.getClass()) : errorCode;
         this.arguments = doTransform(arguments);
     }
 

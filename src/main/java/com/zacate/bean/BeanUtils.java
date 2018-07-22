@@ -48,11 +48,11 @@ public abstract class BeanUtils {
         throw new IllegalArgumentException("The type [" + interfaceTypeToSearch.getName() + "] is not a Generic Interface");
     }
 
-    public static boolean isIntegerType(final Object value) {
+    public static boolean isSomeIntegerType(final Object value) {
         return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
     }
 
-    public static boolean isDateTimeType(final Object value) {
+    public static boolean isSomeDateTimeType(final Object value) {
         return value instanceof Date || value instanceof GregorianCalendar || value instanceof java.sql.Date ||
                 value instanceof java.sql.Timestamp || value instanceof LocalDate || value instanceof LocalDateTime;
     }

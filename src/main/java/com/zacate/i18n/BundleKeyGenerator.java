@@ -10,7 +10,7 @@ import static com.zacate.i18n.LocalizedConstants.*;
  */
 public abstract class BundleKeyGenerator {
 
-    public static String expandKeyUsing(final String key, final Class<?> clazz) {
+    public static String createKeyUsing(final String key, final Class<?> clazz) {
         if (key.startsWith(clazz.getName())) {
             return key;
         }
@@ -21,8 +21,8 @@ public abstract class BundleKeyGenerator {
         return fqkn.toString();
     }
 
-    public static String expandKeyAsReservedParameter(final String key, final Class<?> clazz) {
-        final String fqkn = expandKeyUsing(key, clazz);
+    public static String createKeyAsReservedParameter(final String key, final Class<?> clazz) {
+        final String fqkn = createKeyUsing(key, clazz);
         final StringBuilder rkn = new StringBuilder(fqkn.length() + 2);
         rkn.append(LEFT_BRACE);
         rkn.append(fqkn);
