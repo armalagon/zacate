@@ -9,10 +9,7 @@ import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  *
@@ -26,7 +23,7 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
 
     protected static final String ERROR_FOR_UNABLE_TO_CONVERT_VALUE = "The value [%s] can't be converted to the requested type [%s]";
 
-    protected final List<String> isoDateFormats = new ArrayList<>();
+    private final List<String> isoDateFormats = new ArrayList<>();
 
     public DefaultDatatypeConverter() {
         // ISO Date/Datetime formats supported
@@ -58,6 +55,8 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
 
     @Override
     public <T> T getValue(final String valueToConvert, final Class<T> clazz) {
+        Objects.requireNonNull(clazz, "clazz");
+
         Object convertedValue;
 
         if (clazz.isEnum()) {

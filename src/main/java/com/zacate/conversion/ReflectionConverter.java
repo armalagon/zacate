@@ -18,14 +18,15 @@ import java.util.Objects;
  */
 public class ReflectionConverter {
 
-    protected static final String ERROR_FOR_CONSTRUCTOR_INSTANTIATION = "Error instantiating the type %s through the String constructor";
-    protected static final String ERROR_FOR_STATIC_FACTORY_INSTANTIATION = "Error instantiating the type %s through the static factory " +
-            "method";
+    protected static final String ERROR_FOR_CONSTRUCTOR_INSTANTIATION = "Something went wrong trying to instantiate the type %s using " +
+            "the string constructor";
+    protected static final String ERROR_FOR_STATIC_FACTORY_INSTANTIATION = "Something went wrong trying to instantiate the type %s " +
+            "using the static factory method";
     protected static final String ERROR_FOR_UNSUPPORTED_TYPE = "The requested type [%s] is not supported yet";
 
     protected static final String STRING_FACTORY_METHOD_NAME = "valueOf";
 
-    protected final List<Class<?>> excludedTypes;
+    private final List<Class<?>> excludedTypes;
 
     public ReflectionConverter() {
         this.excludedTypes = new ArrayList<>();
@@ -34,7 +35,7 @@ public class ReflectionConverter {
     }
 
     protected void addExcludedType(final Class<?> clazz) {
-        this.excludedTypes.add(Objects.requireNonNull(clazz));
+        this.excludedTypes.add(clazz);
     }
 
     protected boolean isExcluded(final Class<?> clazz) {
@@ -44,11 +45,12 @@ public class ReflectionConverter {
     public <T> T getValue(final String valueToConvert, final Class<T> clazz) {
         Objects.requireNonNull(clazz, "clazz");
 
-        if (valueToConvert == null || clazz == String.class) {
-            return (T) valueToConvert;
-        }
         if (isExcluded(clazz)) {
             throw new UnsupportedOperationException(String.format(ERROR_FOR_UNSUPPORTED_TYPE, clazz.getName()));
+        }
+
+        if (valueToConvert == null || clazz == String.class) {
+            return (T) valueToConvert;
         }
 
         Object convertedValue;
