@@ -1,7 +1,6 @@
 package com.zacate.jdbc;
 
-import com.zacate.util.ArrayUtils;
-import java.time.LocalDate;
+import com.zacate.util.Arguments;
 
 /**
  *
@@ -11,10 +10,6 @@ import java.time.LocalDate;
  */
 public abstract class JDBCUtils {
 
-    public static LocalDate toLocalDate(java.sql.Date date) {
-        return date != null ? LocalDate.ofEpochDay(date.getTime()) : null;
-    }
-
     public static void close(AutoCloseable jdbcObj) throws Exception {
         if (jdbcObj == null) {
             return;
@@ -23,7 +18,7 @@ public abstract class JDBCUtils {
     }
 
     public static void close(AutoCloseable... objs) throws Exception {
-        if (ArrayUtils.isEmpty(objs)) {
+        if (Arguments.isEmpty(objs)) {
             return;
         }
         for (AutoCloseable obj : objs) {

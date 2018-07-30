@@ -17,7 +17,7 @@ public abstract class NumberUtils {
         return num != null && num.compareTo(BigDecimal.ZERO) == 0;
     }
 
-    public static boolean isDifferentFromZero(final BigDecimal num) {
+    public static boolean isNonZero(final BigDecimal num) {
         return !isZero(num);
     }
 
@@ -25,7 +25,7 @@ public abstract class NumberUtils {
         return num != null && num.compareTo(BigDecimal.ONE) == 0;
     }
 
-    public static boolean isDifferentFromOne(final BigDecimal num) {
+    public static boolean isNonOne(final BigDecimal num) {
         return !isOne(num);
     }
 
@@ -45,12 +45,28 @@ public abstract class NumberUtils {
         }
 
         final BigDecimal remainder = num.remainder(BigDecimal.ONE);
-        if (isDifferentFromZero(remainder)) {
+        if (isNonZero(remainder)) {
             final int tenToPowerOf = (int) Math.pow(10, scale);
             return remainder.multiply(new BigDecimal(tenToPowerOf)).setScale(0, RoundingMode.HALF_UP).intValue();
         } else {
             return -1;
         }
+    }
+
+    public static <T extends Number & Comparable<T>> boolean isLessThan(T left, T right) {
+        return left != null && left.compareTo(right) < 0;
+    }
+
+    public static <T extends Number & Comparable<T>> boolean isEqual(T left, T right) {
+        return left != null && left.compareTo(right) == 0;
+    }
+
+    public static <T extends Number & Comparable<T>> boolean isGreaterThan(T left, T right) {
+        return left != null && left.compareTo(right) > 0;
+    }
+
+    public static <T extends Number & Comparable<T>> boolean isOutOfBoundaries(T number, T left, T right) {
+        return number != null && (isLessThan(number, left) || isGreaterThan(number, right));
     }
 
 }

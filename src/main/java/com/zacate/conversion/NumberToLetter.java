@@ -81,52 +81,6 @@ public abstract class NumberToLetter {
         return resp.toString();
     }
 
-    protected class GroupedNumber {
-        protected final int number;
-        protected final int[] numbers;
-        protected final int tenToPowerOf; // 10^n
-        protected final int count;
-        protected final int tensIfApply;
-
-        public GroupedNumber(final int number, final int[] numbers, final int tenToPowerOf) {
-            this.number = number;
-            this.tenToPowerOf = tenToPowerOf;
-
-            // Remove unnecesary zeroes
-            if (number != 0) {
-                int zeroes = 0;
-                int sum = 0;
-                for (int i = 0; i < numbers.length; i++) {
-                    if (numbers[i] == 0) {
-                        ++zeroes;
-                    }
-                    if ((number >= 10 && number <= 99) || (number >= 100 && number <= 999 & i > 0)) {
-                        sum += numbers[i];
-                    }
-                }
-                int[] _numbers = new int[numbers.length - zeroes];
-                for (int i = 0, j = 0; i < numbers.length; i++) {
-                    if (numbers[i] != 0) {
-                        _numbers[j++] = numbers[i];
-                    }
-                }
-                this.numbers = _numbers;
-                this.count = this.numbers.length;
-                this.tensIfApply = sum != 0 ? sum : -1;
-            } else {
-                this.numbers = numbers;
-                this.count = numbers.length;
-                this.tensIfApply = -1;
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "GroupedNumber [number=" + number + ", numbers=" + Arrays.toString(numbers) + ", tenToPowerOf=" + tenToPowerOf
-                    + ", tensIfApply=" + tensIfApply + "]";
-        }
-    }
-
     private List<GroupedNumber> createGroups() {
         final char[] digits = String.valueOf(num).toCharArray();
         final int threeDigitsCount = (int) Math.ceil(digits.length/3d);
@@ -178,6 +132,52 @@ public abstract class NumberToLetter {
             doAppendNewPart(resp, currencyAndDecimalPartCombiner.apply(_currency, _decimalPart));
         }
         return resp.toString();
+    }
+
+    protected class GroupedNumber {
+        protected final int number;
+        protected final int[] numbers;
+        protected final int tenToPowerOf; // 10^n
+        protected final int count;
+        protected final int tensIfApply;
+
+        public GroupedNumber(final int number, final int[] numbers, final int tenToPowerOf) {
+            this.number = number;
+            this.tenToPowerOf = tenToPowerOf;
+
+            // Remove unnecesary zeroes
+            if (number != 0) {
+                int zeroes = 0;
+                int sum = 0;
+                for (int i = 0; i < numbers.length; i++) {
+                    if (numbers[i] == 0) {
+                        ++zeroes;
+                    }
+                    if ((number >= 10 && number <= 99) || (number >= 100 && number <= 999 & i > 0)) {
+                        sum += numbers[i];
+                    }
+                }
+                int[] _numbers = new int[numbers.length - zeroes];
+                for (int i = 0, j = 0; i < numbers.length; i++) {
+                    if (numbers[i] != 0) {
+                        _numbers[j++] = numbers[i];
+                    }
+                }
+                this.numbers = _numbers;
+                this.count = this.numbers.length;
+                this.tensIfApply = sum != 0 ? sum : -1;
+            } else {
+                this.numbers = numbers;
+                this.count = numbers.length;
+                this.tensIfApply = -1;
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "GroupedNumber [number=" + number + ", numbers=" + Arrays.toString(numbers) + ", tenToPowerOf=" + tenToPowerOf
+                    + ", tensIfApply=" + tensIfApply + "]";
+        }
     }
 
     public static NumberToLetter getInstance(final long num) {

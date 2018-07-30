@@ -3,7 +3,7 @@ package com.zacate.i18n;
 import static com.zacate.i18n.LocalizedConstants.LEFT_BRACE_STR;
 import static com.zacate.i18n.LocalizedConstants.PREFIX_TO_EXPAND_PARAMETER_KEY;
 import static com.zacate.i18n.LocalizedConstants.RIGHT_BRACE_STR;
-import com.zacate.util.ArrayUtils;
+import com.zacate.util.Arguments;
 import java.text.MessageFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -37,7 +37,7 @@ public abstract class LocalizedMessageResolver {
     public static String translate(final String bundleName, final String key, final Object... arguments) {
         String template = translate(bundleName, key);
 
-        if (ArrayUtils.isEmpty(arguments)) {
+        if (Arguments.isEmpty(arguments)) {
             return template;
         }
 

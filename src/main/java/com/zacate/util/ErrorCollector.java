@@ -33,4 +33,8 @@ public class ErrorCollector {
         return errors.stream().map(Exception::getMessage).collect(Collectors.toList());
     }
 
+    public boolean isEmpty() {
+        return errors.isEmpty();
+    }
+
 }

@@ -35,7 +35,7 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(final CharSequence... values) {
-        if (!(found || ArrayUtils.isEmpty(values))) {
+        if (!(found || Arguments.isEmpty(values))) {
             for (CharSequence value : values) {
                 field(value);
             }
@@ -53,7 +53,7 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(final StringNaturalIdentifierLocalizable... values) {
-        if (!(found || ArrayUtils.isEmpty(values))) {
+        if (!(found || Arguments.isEmpty(values))) {
             for (StringNaturalIdentifierLocalizable value : values) {
                 field(value);
             }
@@ -69,7 +69,7 @@ public class SimpleTextSearch {
     }
 
     public SimpleTextSearch field(final Localized... values) {
-        if (!(found || ArrayUtils.isEmpty(values))) {
+        if (!(found || Arguments.isEmpty(values))) {
             for (Localized value : values) {
                 field(value);
             }
