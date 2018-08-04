@@ -1,6 +1,6 @@
 package com.zacate.conversion;
 
-import com.zacate.bean.BeanUtils;
+import com.zacate.bean.Reflections;
 import com.zacate.identifier.EnumLookup;
 import com.zacate.identifier.NaturalIdentifier;
 import com.zacate.identifier.StringNaturalIdentifierLocalizable;
@@ -60,11 +60,11 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         Object convertedValue;
 
         if (clazz.isEnum()) {
-            if (BeanUtils.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
+            if (Reflections.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
                 convertedValue = EnumLookup.findByCode(clazz, valueToConvert);
                 return (T) convertedValue;
-            } else if (BeanUtils.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
-                Class<?> codeType = BeanUtils.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
+            } else if (Reflections.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
+                Class<?> codeType = Reflections.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
                 Object code = getValue(valueToConvert, codeType);
                 convertedValue = EnumLookup.findByCode(clazz, code);
                 return (T) convertedValue;
@@ -82,7 +82,6 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
 
         try {
             // Handle special cases as: Date, GregorianCalendar, java.sql.Date, LocalDate, etc...
-            // TODO Handle locale
             if (clazz == Date.class) {
                 convertedValue = convertToDate(valueToConvert);
                 return (T) convertedValue;

@@ -2,12 +2,10 @@ package com.zacate.bean;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -15,7 +13,7 @@ import java.util.Objects;
  * @version 1.0
  * @since 1.0
  */
-public abstract class BeanUtils {
+public abstract class Reflections {
 
     public static boolean interfaceIsSupertypeOf(final Class<?> clazz, final Class<?> interfaceTypeToSearch) {
         Objects.requireNonNull(clazz, "clazz");
@@ -52,9 +50,12 @@ public abstract class BeanUtils {
         return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
     }
 
-    public static boolean isSomeDateTimeType(final Object value) {
-        return value instanceof Date || value instanceof GregorianCalendar || value instanceof java.sql.Date ||
-                value instanceof java.sql.Timestamp || value instanceof LocalDate || value instanceof LocalDateTime;
+    public static List<Package> findPackagesEndWith(String suffix) {
+        Objects.requireNonNull(suffix, "suffix");
+        return Arrays.asList(Package.getPackages())
+                .stream()
+                .filter(pkg -> pkg.getName().endsWith(suffix))
+                .collect(Collectors.toList());
     }
 
 }

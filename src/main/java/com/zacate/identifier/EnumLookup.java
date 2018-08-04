@@ -1,6 +1,6 @@
 package com.zacate.identifier;
 
-import com.zacate.bean.BeanUtils;
+import com.zacate.bean.Reflections;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -43,10 +43,10 @@ public abstract class EnumLookup {
         }
 
         Class<?> inferredCodeType = null;
-        if (BeanUtils.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
+        if (Reflections.interfaceIsSupertypeOf(clazz, StringNaturalIdentifierLocalizable.class)) {
             inferredCodeType = String.class;
-        } else if (BeanUtils.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
-            inferredCodeType = BeanUtils.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
+        } else if (Reflections.interfaceIsSupertypeOf(clazz, NaturalIdentifier.class)) {
+            inferredCodeType = Reflections.getTypeArgumentsFromGenericInterface(clazz, NaturalIdentifier.class)[0].getClass();
         }
 
         if (inferredCodeType != null) {
