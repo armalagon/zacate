@@ -1,8 +1,6 @@
 package com.zacate.i18n;
 
-import com.zacate.bean.Reflections;
 import static com.zacate.i18n.LocalizedConstants.DOT;
-import static com.zacate.i18n.LocalizedConstants.I18N_PACKAGE_SUFFIX;
 import static com.zacate.i18n.LocalizedConstants.STANDARD_BUNDLE_FILENAME;
 import java.util.List;
 import java.util.Locale;
@@ -18,18 +16,17 @@ import java.util.stream.Collectors;
  */
 public abstract class BundleFinder {
 
-    public static List<ResourceBundle> findBundles() {
-        return findBundles(I18N_PACKAGE_SUFFIX, STANDARD_BUNDLE_FILENAME, null);
+    public static List<ResourceBundle> findBundles(List<String> packages) {
+        return findBundles(packages, STANDARD_BUNDLE_FILENAME, null);
     }
 
-    public static List<ResourceBundle> findBundles(Locale locale) {
-        return findBundles(I18N_PACKAGE_SUFFIX, STANDARD_BUNDLE_FILENAME, locale);
+    public static List<ResourceBundle> findBundles(List<String> packages, Locale locale) {
+        return findBundles(packages, STANDARD_BUNDLE_FILENAME, locale);
     }
 
-    public static List<ResourceBundle> findBundles(String packageSuffix, String bundleName, Locale locale) {
-        List<String> bundleNames = Reflections.findPackagesEndWith(packageSuffix)
+    public static List<ResourceBundle> findBundles(List<String> packages, String bundleName, Locale locale) {
+        List<String> bundleNames = packages
                 .stream()
-                .map(Package::getName)
                 .map(name -> new StringBuilder(name).append(DOT).append(bundleName).toString())
                 .collect(Collectors.toList());
 

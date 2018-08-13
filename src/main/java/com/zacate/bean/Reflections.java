@@ -3,9 +3,7 @@ package com.zacate.bean;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  *
@@ -48,14 +46,6 @@ public abstract class Reflections {
 
     public static boolean isSomeIntegerType(final Object value) {
         return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
-    }
-
-    public static List<Package> findPackagesEndWith(String suffix) {
-        Objects.requireNonNull(suffix, "suffix");
-        return Arrays.asList(Package.getPackages())
-                .stream()
-                .filter(pkg -> pkg.getName().endsWith(suffix))
-                .collect(Collectors.toList());
     }
 
 }

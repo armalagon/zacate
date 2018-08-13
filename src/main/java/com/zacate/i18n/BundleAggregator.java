@@ -10,20 +10,18 @@ import java.util.stream.Collectors;
  * @version 1.0
  * @since 1.0
  */
-public class BundleAggregator extends ResourceBundle {
+public abstract class BundleAggregator extends ResourceBundle {
 
     private static final Set<Locale> supportedLocales = new HashSet<>();
 
     private final Map<Locale, List<ResourceBundle>> bundles = new HashMap<>();
     private final Enumeration<String> keys;
 
-    public BundleAggregator() {
+    public BundleAggregator(List<String> packages) {
         if (!supportedLocales.isEmpty()) {
-            for (Locale locale : supportedLocales) {
-                bundles.put(locale, BundleFinder.findBundles(locale));
-            }
+            supportedLocales.forEach(locale -> bundles.put(locale, BundleFinder.findBundles(packages, locale)));
         } else {
-            bundles.put(Locale.getDefault(), BundleFinder.findBundles());
+            bundles.put(Locale.getDefault(), BundleFinder.findBundles(packages));
         }
         this.keys = accumulateKeys(bundles);
     }
@@ -40,7 +38,7 @@ public class BundleAggregator extends ResourceBundle {
         return Collections.enumeration(keys);
     }
 
-    private String evaluateAndGetKey(String key) {
+    private String normalizeKey(String key) {
         // TODO Implements a cache for keys
         return key.contains(LocalizedConstants.SPECIAL_KEY_SEPARATOR_STR) ?
                 key.replaceAll(LocalizedConstants.SPECIAL_KEY_SEPARATOR_STR, LocalizedConstants.DOT_STR) : key;
@@ -55,10 +53,11 @@ public class BundleAggregator extends ResourceBundle {
 
     @Override
     protected Object handleGetObject(String key) {
+        String _key = normalizeKey(key);
         String value;
 
         try {
-            Predicate<ResourceBundle> containsKey = rb -> rb.containsKey(evaluateAndGetKey(key));
+            Predicate<ResourceBundle> containsKey = rb -> rb.containsKey(_key);
 
             long count = getBundles().stream()
                     .filter(containsKey)
@@ -72,9 +71,9 @@ public class BundleAggregator extends ResourceBundle {
                 .filter(containsKey)
                 .findFirst()
                 .get()
-                .getString(key);
+                .getString(_key);
         } catch (MissingResourceException mre) {
-            value = key;
+            value = _key;
         }
 
         return value;
@@ -85,8 +84,8 @@ public class BundleAggregator extends ResourceBundle {
         return keys;
     }
 
-    public static void addSupportedLanguage(final Locale language) {
-        Objects.requireNonNull(language, "locale");
+    protected static void addSupportedLanguage(final Locale language) {
+        Objects.requireNonNull(language, "language");
         supportedLocales.add(language);
     }
 
