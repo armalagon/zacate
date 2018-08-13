@@ -1,5 +1,6 @@
 package com.zacate.bean;
 
+import com.zacate.i18n.LocalizedConstants;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Arrays;
@@ -46,6 +47,11 @@ public abstract class Reflections {
 
     public static boolean isSomeIntegerType(final Object value) {
         return value instanceof Byte || value instanceof Short || value instanceof Integer || value instanceof Long;
+    }
+
+    public static String getParentPackageName(String packageName) {
+        Objects.requireNonNull(packageName, "packageName");
+        return packageName.substring(0, packageName.lastIndexOf(LocalizedConstants.DOT));
     }
 
 }
