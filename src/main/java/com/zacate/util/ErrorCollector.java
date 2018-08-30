@@ -1,6 +1,9 @@
 package com.zacate.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -19,10 +22,6 @@ public class ErrorCollector {
 
     public void add(Exception ex) {
         errors.add(Objects.requireNonNull(ex, "ex"));
-    }
-
-    public void addAll(Collection<Exception> exs) {
-        errors.addAll(Objects.requireNonNull(exs, "exs"));
     }
 
     public List<Exception> getErrors() {
