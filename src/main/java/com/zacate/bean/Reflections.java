@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public abstract class Reflections {
 
+    private static final String EMPTY = "";
+
     public static boolean interfaceIsSupertypeOf(final Class<?> clazz, final Class<?> interfaceTypeToSearch) {
         Objects.requireNonNull(clazz, "clazz");
         Objects.requireNonNull(interfaceTypeToSearch, "interfaceTypeToSearch");
@@ -51,7 +53,14 @@ public abstract class Reflections {
 
     public static String getParentPackageName(String packageName) {
         Objects.requireNonNull(packageName, "packageName");
-        return packageName.substring(0, packageName.lastIndexOf(LocalizedConstants.DOT));
+        int first = packageName.indexOf(LocalizedConstants.DOT);
+        int last = packageName.lastIndexOf(LocalizedConstants.DOT);
+        return first != last ? packageName.substring(0, last) : EMPTY;
+    }
+
+    public static String getParentPackageName(Class<?> clazz) {
+        Objects.requireNonNull(clazz, "clazz");
+        return getParentPackageName(clazz.getPackage().getName());
     }
 
 }
