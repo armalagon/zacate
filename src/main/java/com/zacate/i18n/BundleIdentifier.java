@@ -1,5 +1,6 @@
 package com.zacate.i18n;
 
+import com.zacate.bean.Reflections;
 import static com.zacate.i18n.LocalizedConstants.*;
 
 /**
@@ -11,10 +12,9 @@ import static com.zacate.i18n.LocalizedConstants.*;
 public interface BundleIdentifier {
 
     default String getBundlePrefix() {
-        String packageName = this.getClass().getPackage().getName();
-        StringBuilder i18n = new StringBuilder();
-
-        i18n.append(packageName.substring(0, packageName.lastIndexOf(DOT_STR) + 1));
+        final StringBuilder i18n = new StringBuilder();
+        i18n.append(Reflections.getParentPackageName(this.getClass()));
+        i18n.append(DOT);
         i18n.append(I18N_PACKAGE_SUFFIX);
         return i18n.toString();
     }
@@ -25,8 +25,7 @@ public interface BundleIdentifier {
 
     default String getDefaultBaseBundleName() {
         String bundlePrefix = getBundlePrefix();
-        StringBuilder baseName = new StringBuilder(bundlePrefix);
-
+        final StringBuilder baseName = new StringBuilder(bundlePrefix);
         if (!bundlePrefix.endsWith(DOT_STR)) {
             baseName.append(DOT);
         }
