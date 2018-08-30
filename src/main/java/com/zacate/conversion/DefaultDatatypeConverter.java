@@ -49,8 +49,7 @@ public class DefaultDatatypeConverter extends ReflectionConverter {
         if (pe != null) {
             throw pe;
         }
-        // This isn't going to happen
-        return null;
+        throw new IllegalStateException("At this point, this method should have returned a Date objet or raised an error");
     }
 
     @Override
