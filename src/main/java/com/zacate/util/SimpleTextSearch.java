@@ -45,9 +45,8 @@ public class SimpleTextSearch {
 
     public SimpleTextSearch field(final StringNaturalIdentifierLocalizable value) {
         if (!(found || value == null)) {
-            found = !(value.getCode() == null || value.getMessage() == null) ? ignoreCase ? value.getCode().toLowerCase().contains(text) ||
-                    value.getMessage().toLowerCase().contains(text) : value.getCode().contains(text) || value.getMessage().contains(text)
-                    : false;
+            field(value.getCode());
+            field(value.getMessage());
         }
         return this;
     }
@@ -63,7 +62,7 @@ public class SimpleTextSearch {
 
     public SimpleTextSearch field(final Localized value) {
         if (!(found || value == null)) {
-            found = ignoreCase ? value.getMessage().toLowerCase().contains(text) : value.getMessage().contains(text);
+            field(value.getMessage());
         }
         return this;
     }
